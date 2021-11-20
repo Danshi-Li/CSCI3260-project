@@ -1,1 +1,147 @@
+#include "Dependencies/glew/glew.h"
+#include "Dependencies/GLFW/glfw3.h"
+#include "Dependencies/glm/glm.hpp"
+#include "Dependencies/glm/gtc/matrix_transform.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "Shader.h"
+#include "Shader.cpp"
+#include "Texture.h"
+#include "Texture.cpp"
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <map>
+//********** pre-provided utility functions are written in util.h **********
+#include <util.h>
+
+
+
+
+//********** Utility classes should be defined inseparate .h/.cpp flies.
+//           Include external classes below                             **********
+
+
+
+
+//
+// 
+//********** Define utility global variables below **********
+
+
+
+
+//
+//
+//********** Define utility functions below **********
+
+// incapsulate the matrix definition for OpenGL objects here.
+// refer to the codebase https://github.com/sinyiwsy/CSCI-3260-Assignment2/blob/master/main.cpp, Line 744
+void setupTransformMatrix(string obj) {
+
+}
+
+
+
+
+//
+//
+//********** The OpenGL pipeline functions **********
+void sendDataToOpenGL() {
+
+}
+
+
+void paintGL(void) {
+
+}
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
+
+//
+// 
+//********** Event specific callbacks **********
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+
+}
+
+
+void cursor_position_callback(GLFWwindow* window, double x, double y) {
+
+}
+
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+
+}
+
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+
+}
+
+
+
+//
+//
+//********** The main function
+int main(int argc, char* argv[])
+{
+	GLFWwindow* window;
+
+	/* Initialize the glfw */
+	if (!glfwInit()) {
+		std::cout << "Failed to initialize GLFW" << std::endl;
+		return -1;
+	}
+	/* glfw: configure; necessary for MAC */
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+	/* Create a windowed mode window and its OpenGL context */
+	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Assignment 2", NULL, NULL);
+	if (!window) {
+		std::cout << "Failed to create GLFW window" << std::endl;
+		glfwTerminate();
+		return -1;
+	}
+
+	/* Make the window's context current */
+	glfwMakeContextCurrent(window);
+
+	/*register callback functions*/
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetKeyCallback(window, key_callback);                                                                  //    
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+
+	initializedGL();
+
+	while (!glfwWindowShouldClose(window)) {
+		/* Render here */
+		paintGL();
+
+		/* Swap front and back buffers */
+		glfwSwapBuffers(window);
+
+		/* Poll for and process events */
+		glfwPollEvents();
+	}
+
+	glfwTerminate();
+
+	return 0;
+}
