@@ -14,8 +14,15 @@
 #include <fstream>
 #include <vector>
 #include <map>
+
+using namespace std;
+using glm::vec3;
+using glm::vec4;
+using glm::mat4;
+
 //********** pre-provided utility functions are written in util.h **********
-#include <util.h>
+#include "util.h"
+#include "callbacks.h"
 
 
 
@@ -65,26 +72,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 
 
-//
-// 
-//********** Event specific callbacks **********
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+void initializedGL(void) //run only once
+{
+	if (glewInit() != GLEW_OK) {
+		std::cout << "GLEW not OK." << std::endl;
+	}
 
-}
+	get_OpenGL_info();
+	sendDataToOpenGL();
 
+	installShaders();
 
-void cursor_position_callback(GLFWwindow* window, double x, double y) {
-
-}
-
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-
-}
-
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS);
 }
 
 

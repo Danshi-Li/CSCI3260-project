@@ -15,13 +15,42 @@
 #include <vector>
 #include <map>
 
+typedef struct PIPELINE {
+	GLuint vao;
+	GLuint vbo;
+	GLuint uvbo;
+	GLuint nbo;
+	GLuint tbo;
+	GLuint btbo;
+	GLuint texture;
+	GLuint normalTexture;
+	int size;
+	bool collision;
+	bool normalMapping;
+} pipeline;
+
+
+typedef struct OBJECT {
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec3> bitangents;
+} object;
+
+/*
 struct Model {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 };
-
-
+*/
+/*
+NOTE: this function is originally given in assignment2 in order to load object into the Model class as
 Model loadOBJ(const char* objPath)
+But we want to re-implement it to load into the object class, with several features added.
+An implementation in https://gitlab.com/cynthia0525/csci3260/-/blob/master/Course%20Project/model.h is accessible. Ned to extend this function.
+*/
+object loadOBJ(const char* objPath)
 {
 	// function to load the obj file
 	// Note: this simple function cannot load all obj files.
@@ -176,8 +205,6 @@ std::string readShaderCode(const char* fileName) {
 	);
 }
 
-
-
 void installShaders() {
 	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -220,20 +247,29 @@ void get_OpenGL_info()
 	std::cout << "OpenGL version: " << glversion << std::endl;
 }
 
-void initializedGL(void) //run only once
+void setMat4(GLuint const programID, const std::string& name, glm::mat4 value)
 {
-	if (glewInit() != GLEW_OK) {
-		std::cout << "GLEW not OK." << std::endl;
-	}
+	glUniformMatrix4fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+void setVec3(GLuint const programID, const std::string& name, glm::vec3 value)
+{
+	glUniform3fv(glGetUniformLocation(programID, name.c_str()), 1, &value[0]);
+}
+void setFloat(GLuint const programID, const std::string& name, float value)
+{
+	glUniform1f(glGetUniformLocation(programID, name.c_str()), value);
+}
+void setInt(GLuint const programID, const std::string& name, int value)
+{
+	glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
+}
+void setBool(GLuint const programID, const std::string& name, bool value)
+{
+	glUniform1i(glGetUniformLocation(programID, name.c_str()), (int)value);
+}
 
-	get_OpenGL_info();
-	sendDataToOpenGL();
 
-	//TODO: set up the camera parameters
-	//TODO: set up the vertex shader and fragment shader
-	installShaders();
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glDepthFunc(GL_LESS);
+void(object obj, pipeline* buffer, GLuint texture) {
+	//TODO: initialize the buffers corresponding to an object to be painted.
+	//      refer to the function generateVAOVBO in https://gitlab.com/cynthia0525/csci3260/-/blob/master/Course%20Project/model.h to get an idea what we want to implement
 }
