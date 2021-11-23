@@ -41,6 +41,7 @@
 		3D2286E2274D23A30082AED0 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shader.h; path = ../main/Shader.h; sourceTree = "<group>"; };
 		3D2286E3274D23A30082AED0 /* VertexShaderCode.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = VertexShaderCode.glsl; path = ../main/VertexShaderCode.glsl; sourceTree = "<group>"; };
 		3D2286E4274D23A30082AED0 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = ../main/util.h; sourceTree = "<group>"; };
+		3D7724B7274D428F00BACCD9 /* callbacks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = callbacks.h; path = ../main/callbacks.h; sourceTree = "<group>"; };
 		3DDF2ED0274D0CD60044FEE8 /* 3260proj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 3260proj; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DDF2EDB274D0D220044FEE8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		3DDF2EDD274D0D2F0044FEE8 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../../usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 		3DDF2EC7274D0CD60044FEE8 = {
 			isa = PBXGroup;
 			children = (
+				3D7724B7274D428F00BACCD9 /* callbacks.h */,
 				3D2286D8274D23A20082AED0 /* FragmentShaderCode.glsl */,
 				3D2286DC274D23A20082AED0 /* main.cpp */,
 				3D2286DF274D23A20082AED0 /* object */,
