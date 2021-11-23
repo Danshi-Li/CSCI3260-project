@@ -1,6 +1,12 @@
 #include "Texture.h"
 
+#ifdef __APPLE__
 #include "GL/glew.h"
+#elif defined _WIN32 || defined _WIN64
+#include "Dependencies\glew\glew.h"
+#endif
+
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "Dependencies/stb_image/stb_image.h"
 

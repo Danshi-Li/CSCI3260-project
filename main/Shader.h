@@ -1,6 +1,14 @@
 #pragma once
+
+#ifdef __APPLE__
 #include "GL/glew.h"
 #include "glm/glm.hpp"
+#elif defined _WIN32 || defined _WIN64
+#include "Dependencies\glew\glew.h"
+#include "Dependencies\glm\glm.hpp"
+#endif
+
+
 
 #include <string>
 #include <iostream>

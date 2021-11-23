@@ -1,5 +1,12 @@
 #include "Shader.h"
+
+#ifdef __APPLE__
 #include "glm/gtc/type_ptr.hpp"
+#elif defined _WIN32 || defined _WIN64
+#include "Dependencies\glm\gtc\type_ptr.hpp"
+#endif
+
+
 
 #include <fstream>
 

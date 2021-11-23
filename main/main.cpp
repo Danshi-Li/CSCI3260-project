@@ -1,7 +1,14 @@
+#ifdef __APPLE__
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#elif defined _WIN32 || defined _WIN64
 #include "Dependencies/glew/glew.h"
 #include "Dependencies/GLFW/glfw3.h"
 #include "Dependencies/glm/glm.hpp"
 #include "Dependencies/glm/gtc/matrix_transform.hpp"
+#endif
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
