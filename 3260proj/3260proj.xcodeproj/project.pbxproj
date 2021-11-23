@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D2286E5274D23A30082AED0 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2286DA274D23A20082AED0 /* Texture.cpp */; };
+		3D2286E6274D23A30082AED0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2286DC274D23A20082AED0 /* main.cpp */; };
+		3D2286E7274D23A30082AED0 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D2286E1274D23A20082AED0 /* Shader.cpp */; };
 		3DDF2EDC274D0D220044FEE8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DDF2EDB274D0D220044FEE8 /* OpenGL.framework */; };
 		3DDF2EDE274D0D2F0044FEE8 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DDF2EDD274D0D2F0044FEE8 /* libGLEW.2.2.0.dylib */; };
 		3DDF2EE0274D0D400044FEE8 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DDF2EDF274D0D400044FEE8 /* libglfw.3.3.dylib */; };
@@ -25,11 +28,23 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3D2286D8274D23A20082AED0 /* FragmentShaderCode.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FragmentShaderCode.glsl; path = ../main/FragmentShaderCode.glsl; sourceTree = "<group>"; };
+		3D2286D9274D23A20082AED0 /* SkyboxVertexShaderCode.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SkyboxVertexShaderCode.glsl; path = ../main/SkyboxVertexShaderCode.glsl; sourceTree = "<group>"; };
+		3D2286DA274D23A20082AED0 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = ../main/Texture.cpp; sourceTree = "<group>"; };
+		3D2286DB274D23A20082AED0 /* SkyboxFragmentShaderCode.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SkyboxFragmentShaderCode.glsl; path = ../main/SkyboxFragmentShaderCode.glsl; sourceTree = "<group>"; };
+		3D2286DC274D23A20082AED0 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../main/main.cpp; sourceTree = "<group>"; };
+		3D2286DD274D23A20082AED0 /* skybox */ = {isa = PBXFileReference; lastKnownFileType = folder; name = skybox; path = ../main/skybox; sourceTree = "<group>"; };
+		3D2286DE274D23A20082AED0 /* texture */ = {isa = PBXFileReference; lastKnownFileType = folder; name = texture; path = ../main/texture; sourceTree = "<group>"; };
+		3D2286DF274D23A20082AED0 /* object */ = {isa = PBXFileReference; lastKnownFileType = folder; name = object; path = ../main/object; sourceTree = "<group>"; };
+		3D2286E0274D23A20082AED0 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = ../main/Texture.h; sourceTree = "<group>"; };
+		3D2286E1274D23A20082AED0 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Shader.cpp; path = ../main/Shader.cpp; sourceTree = "<group>"; };
+		3D2286E2274D23A30082AED0 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shader.h; path = ../main/Shader.h; sourceTree = "<group>"; };
+		3D2286E3274D23A30082AED0 /* VertexShaderCode.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = VertexShaderCode.glsl; path = ../main/VertexShaderCode.glsl; sourceTree = "<group>"; };
+		3D2286E4274D23A30082AED0 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = ../main/util.h; sourceTree = "<group>"; };
 		3DDF2ED0274D0CD60044FEE8 /* 3260proj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 3260proj; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DDF2EDB274D0D220044FEE8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		3DDF2EDD274D0D2F0044FEE8 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../../usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
 		3DDF2EDF274D0D400044FEE8 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../usr/local/Cellar/glfw/3.3.4/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
-		3DDF2EE1274D0D8D0044FEE8 /* main */ = {isa = PBXFileReference; lastKnownFileType = folder; name = main; path = ../../main; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +64,19 @@
 		3DDF2EC7274D0CD60044FEE8 = {
 			isa = PBXGroup;
 			children = (
+				3D2286D8274D23A20082AED0 /* FragmentShaderCode.glsl */,
+				3D2286DC274D23A20082AED0 /* main.cpp */,
+				3D2286DF274D23A20082AED0 /* object */,
+				3D2286E1274D23A20082AED0 /* Shader.cpp */,
+				3D2286E2274D23A30082AED0 /* Shader.h */,
+				3D2286DD274D23A20082AED0 /* skybox */,
+				3D2286DB274D23A20082AED0 /* SkyboxFragmentShaderCode.glsl */,
+				3D2286D9274D23A20082AED0 /* SkyboxVertexShaderCode.glsl */,
+				3D2286DE274D23A20082AED0 /* texture */,
+				3D2286DA274D23A20082AED0 /* Texture.cpp */,
+				3D2286E0274D23A20082AED0 /* Texture.h */,
+				3D2286E4274D23A30082AED0 /* util.h */,
+				3D2286E3274D23A30082AED0 /* VertexShaderCode.glsl */,
 				3DDF2ED2274D0CD60044FEE8 /* 3260proj */,
 				3DDF2ED1274D0CD60044FEE8 /* Products */,
 				3DDF2EDA274D0D210044FEE8 /* Frameworks */,
@@ -66,7 +94,6 @@
 		3DDF2ED2274D0CD60044FEE8 /* 3260proj */ = {
 			isa = PBXGroup;
 			children = (
-				3DDF2EE1274D0D8D0044FEE8 /* main */,
 			);
 			path = 3260proj;
 			sourceTree = "<group>";
@@ -138,6 +165,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D2286E6274D23A30082AED0 /* main.cpp in Sources */,
+				3D2286E7274D23A30082AED0 /* Shader.cpp in Sources */,
+				3D2286E5274D23A30082AED0 /* Texture.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
