@@ -43,7 +43,8 @@ using glm::mat4;
 //
 // 
 //********** Define utility global variables below **********
-
+const int SCR_WIDTH = 800;
+const int SCR_HEIGHT = 600;
 
 
 
