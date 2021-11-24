@@ -12,7 +12,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
-//#include "Texture.h"
+#include "Shader.cpp"
+#include "Texture.h"
+#include "Texture.cpp"
 
 
 #include <iostream>
