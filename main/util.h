@@ -43,6 +43,8 @@ typedef struct OBJECT {
 	std::vector<glm::vec3> bitangents;
 } object;
 
+GLuint programID;
+
 /*
 struct Model {
 	std::vector<Vertex> vertices;
@@ -273,36 +275,36 @@ std::string readShaderCode(const char* fileName) {
 	);
 }
 
-//void installShaders() {
-//	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-//	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-//
-//	const GLchar* adapter[1];
-//	//adapter[0] = vertexShaderCode;
-//	std::string temp = readShaderCode("VertexShader.glsl");
-//	adapter[0] = temp.c_str();
-//	glShaderSource(vertexShaderID, 1, adapter, 0);
-//	//adapter[0] = fragmentShaderCode;
-//	temp = readShaderCode("FragmentShader.glsl");
-//	adapter[0] = temp.c_str();
-//	glShaderSource(fragmentShaderID, 1, adapter, 0);
-//
-//	glCompileShader(vertexShaderID);
-//	glCompileShader(fragmentShaderID);
-//
-//	if (!checkShaderStatus(vertexShaderID) || !checkShaderStatus(fragmentShaderID))
-//		return;
-//
-//	programID = glCreateProgram();
-//	glAttachShader(programID, vertexShaderID);
-//	glAttachShader(programID, fragmentShaderID);
-//	glLinkProgram(programID);
-//
-//	if (!checkProgramStatus(programID))
-//		return;
-//	glUseProgram(programID);
-//
-//}
+void installShaders() {
+	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+	const GLchar* adapter[1];
+	//adapter[0] = vertexShaderCode;
+	std::string temp = readShaderCode("VertexShaderCode.glsl");
+	adapter[0] = temp.c_str();
+	glShaderSource(vertexShaderID, 1, adapter, 0);
+	//adapter[0] = fragmentShaderCode;
+	temp = readShaderCode("FragmentShaderCode.glsl");
+	adapter[0] = temp.c_str();
+	glShaderSource(fragmentShaderID, 1, adapter, 0);
+
+	glCompileShader(vertexShaderID);
+	glCompileShader(fragmentShaderID);
+
+	if (!checkShaderStatus(vertexShaderID) || !checkShaderStatus(fragmentShaderID))
+		return;
+
+	programID = glCreateProgram();
+	glAttachShader(programID, vertexShaderID);
+	glAttachShader(programID, fragmentShaderID);
+	glLinkProgram(programID);
+
+	if (!checkProgramStatus(programID))
+		return;
+	glUseProgram(programID);
+
+}
 
 void get_OpenGL_info()
 {
