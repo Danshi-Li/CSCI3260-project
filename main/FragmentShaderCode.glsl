@@ -40,44 +40,45 @@ void main()
     float shininess = 0;
 
     // material color
-    vec3 ambientColor = texture(mapping, uvFrag).rgb;
-    vec3 diffuseColor = texture(mapping, uvFrag).rgb;
-    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
+    vec3 ambientcolor = texture(mapping, uvFrag).rgb;
+    vec3 diffusecolor = texture(mapping, uvFrag).rgb;
+    vec3 specularcolor = vec3(1.0f, 1.0f, 1.0f);
 
-    vec3 normalTangent, lightTangent, eyeTangent;
+    vec3 normaltangent, lighttangent, eyetangent;
     for (int i = 0; i < num; i++) {
         // normal mapping
         if (normalMapping) {
-            normalTangent = texture(mapping_N, uvFrag).rgb * 2.0 - 1.0;
-            lightTangent = TBN * lightSource[i];
-            eyeTangent = TBN * viewPort;
+            normaltangent = texture(mapping_N, uvFrag).rgb * 2.0 - 1.0;
+            lighttangent = TBN * lightSource[i];
+            eyetangent = TBN * viewPort;
         }
         else {
-            normalTangent = normalFrag;
-            lightTangent = lightSource[i];
-            eyeTangent = viewPort;
+            normaltangent = normalFrag;
+            lighttangent = lightSource[i];
+            eyetangent = viewPort;
         }
 
         // attenuation
-        float distance = length(lightTangent - vertexFrag);
+        float distance = length(lighttangent - vertexFrag);
         float attenuation = constantCoeffient + linearCoeffient * distance + quadraticCoeffient * distance * distance;
 
         // diffuse
-        vec3 normalVector = normalize(normalTangent);
-        vec3 lightVector = normalize(lightTangent - vertexFrag);
-        brightness = clamp(dot(normalVector, lightVector), 0, 1) / attenuation;
+        vec3 normalvector = normalize(normaltangent);
+        vec3 lightvector = normalize(lighttangent - vertexFrag);
+        brightness = clamp(dot(normalvector, lightvector), 0, 1) / attenuation;
 
         // specular
-        vec3 reflectVector = reflect(-lightVector, normalVector);
-        vec3 eyeVector = normalize(eyeTangent - vertexFrag);
-        shininess = clamp(dot(reflectVector, eyeVector), 0, 1);
+        vec3 reflectvector = reflect(-lightvector, normalvector);
+        vec3 eyevector = normalize(eyetangent - vertexFrag);
+        shininess = clamp(dot(reflectvector, eyevector), 0, 1);
 
         // object color
-        ambient += ambientColor * lightColor[i];
-        diffuse += diffuseColor * lightColor[i] * brightness;
-        specular += specularColor * lightColor[i] * pow(shininess, 10);
+        ambient += ambientcolor * lightColor[i];
+        diffuse += diffusecolor * lightColor[i] * brightness;
+        specular += specularcolor * lightColor[i] * pow(shininess, 10);
     }
 
     vec3 color = ambient * abientControl + diffuse * diffuseControl + specular * specularControl;
     colorFrag = vec4(color, 1.0);
+    //colorFrag=vec4(0.5,0.5,0.5,1.0);
 }
