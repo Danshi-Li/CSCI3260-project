@@ -18,9 +18,9 @@ uniform float diffuseControl;
 uniform float specularControl;
 
 // light parameter
-uniform vec3 viewPort;
-uniform vec3 lightSource[num];
-uniform vec3 lightColor[num];
+//uniform vec3 viewPort;
+//uniform vec3 lightSource[num];
+//uniform vec3 lightColor[num];
 
 // attenuation coeffient
 float constantCoeffient = 0.3f;

@@ -10,7 +10,6 @@
 #include "Dependencies/glm/gtc/matrix_transform.hpp"
 #endif
 
-#define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
 //#include "Texture.h"
 
@@ -19,6 +18,8 @@
 #include <fstream>
 #include <vector>
 #include <map>
+
+using namespace std;
 
 typedef struct PIPELINE {
 	GLuint vao;
@@ -43,8 +44,6 @@ typedef struct OBJECT {
 	std::vector<glm::vec3> bitangents;
 } object;
 
-GLuint programID;
-
 /*
 struct Model {
 	std::vector<Vertex> vertices;
@@ -57,9 +56,8 @@ Model loadOBJ(const char* objPath)
 But we want to re-implement it to load into the object class, with several features added.
 An implementation in https://gitlab.com/cynthia0525/csci3260/-/blob/master/Course%20Project/model.h is accessible. Ned to extend this function.
 */
-object loadOBJ(const char* path)
+bool loadOBJ(const char* path, object* obj)
 {
-    object obj;
     printf("Loading OBJ file %s...\n", path);
 
     std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
@@ -71,7 +69,7 @@ object loadOBJ(const char* path)
     if (file == NULL) {
         printf("Impossible to open the file ! Are you in the right path ? See Tutorial 6 for details\n");
         getchar();
-        exit(0);
+        return false;
     }
 
     while (1) {
@@ -105,7 +103,7 @@ object loadOBJ(const char* path)
             int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
             if (matches != 9) {
                 printf("File can't be read by our simple parser :-( Try exporting with other options\n");
-                exit(0);
+                return false;
             }
             vertexIndices.push_back(vertexIndex[0]);
             vertexIndices.push_back(vertexIndex[1]);
@@ -121,7 +119,7 @@ object loadOBJ(const char* path)
             char stupidBuffer[1000];
             fgets(stupidBuffer, 1000, file);
         }
-        
+
     }
 
     glm::vec3 tangent, bitangent;
@@ -160,15 +158,14 @@ object loadOBJ(const char* path)
         }
 
         // Put the attributes in buffers
-        obj.vertices.push_back(vertex);
-        obj.uvs.push_back(uv);
-        obj.normals.push_back(normal);
-        obj.tangents.push_back(tangent);
-        obj.bitangents.push_back(bitangent);
+        obj->vertices.push_back(vertex);
+        obj->uvs.push_back(uv);
+        obj->normals.push_back(normal);
+        obj->tangents.push_back(tangent);
+        obj->bitangents.push_back(bitangent);
     }
-    std::cout << "Load obj status code" << std::endl;
-    std::cout << glGetError() << std::endl;
-    return obj;
+
+    return true;
 }
 
 unsigned char* loadBMP(const char* imagepath, unsigned int* width, unsigned int* height)
@@ -209,7 +206,8 @@ unsigned char* loadBMP(const char* imagepath, unsigned int* width, unsigned int*
 }
 
 
-GLuint loadTexture(const char* path){
+GLuint loadTexture(const char* path)
+{
     unsigned int width, height;
     unsigned char* image;
     GLuint textureID;
@@ -223,13 +221,8 @@ GLuint loadTexture(const char* path){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
     delete[] image;
-
-    std::cout << "Load texture status code" << std::endl;
-    std::cout << glGetError() << std::endl;
     return textureID;
-
 }
-
 
 bool checkStatus(
 	GLuint objectID,
@@ -291,9 +284,10 @@ GLuint installShaders(const char* vertexShader, const char* fragmentShader)
     glCompileShader(vertexShaderID);
     glCompileShader(fragmentShaderID);
 
-    if (!checkShaderStatus(vertexShaderID) || !checkShaderStatus(fragmentShaderID))
+    if (!checkShaderStatus(vertexShaderID) || !checkShaderStatus(fragmentShaderID)){
+        std::cout << "fuckshader" << std::endl;
         return 0;
-
+    }
     GLuint programID = glCreateProgram();
     glAttachShader(programID, vertexShaderID);
     glAttachShader(programID, fragmentShaderID);

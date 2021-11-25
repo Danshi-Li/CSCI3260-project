@@ -10,13 +10,6 @@
 #include "Dependencies/glm/gtc/matrix_transform.hpp"
 #endif
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "Shader.h"
-//#include "Shader.cpp"
-//#include "Texture.h"
-//#include "Texture.cpp"
-
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -26,6 +19,7 @@ using namespace std;
 
 //********** pre-provided utility functions are written in util.h **********
 #include "util.h"
+#include "Shader.h"
 
 
 
@@ -43,6 +37,9 @@ const int SCR_WIDTH = 800;
 const int SCR_HEIGHT = 600;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
+
+GLint programID;
+pipeline planet;
 
 //camera setting
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
@@ -72,11 +69,6 @@ float diffuse = 0.65;
 float specular = 0.35;
 
 
-// pipelines (buffers) for objects to draw
-pipeline planet;
-
-
-
 //
 //
 //********** Define utility functions below **********
@@ -104,19 +96,14 @@ void drawVAO(pipeline buffer) {
 }
 
 
-
-
-
-
-
-
-
 //
 //
 //********** The OpenGL pipeline functions **********
 void sendDataToOpenGL() {
-    object obj = loadOBJ("object/planet.obj");
-    GLuint tex = loadTexture("texture/earthTexture.bmp");
+    object obj;
+    GLuint tex;
+    loadOBJ("object/planet.obj", &obj);
+    tex = loadTexture("texture/earthTexture.bmp");
     generateBuffer(obj, &planet, tex);
 //    planet.normalTexture = loadTexture("texture/earthNormal.bmp");
 //    planet.normalMapping = true;
@@ -128,7 +115,7 @@ void paintGL(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0f);
-    
+    glEnable(GL_DEPTH_TEST);
     glUseProgram(programID);
     
     glm::mat4 viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -176,6 +163,7 @@ void paintGL(void) {
 //    scaleMatrix = glm::scale(mat4(), vec3(0.5f, 0.5f, 0.5f));
 //    modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
     
+
     setMat4(programID,"model", modelTransformMatrix);
     drawVAO(planet);
 //    std::cout << "Finished paintGL" << std::endl;
@@ -194,12 +182,14 @@ void initializedGL(void)
     }
     get_OpenGL_info();
     programID = installShaders("VertexShaderCode.glsl", "FragmentShaderCode.glsl");
+    if (programID == 0)     std::cout << "fuck" << std::endl;
+        
 //    skyboxID = installShaders("SkyboxVertexShaderCode.glsl", "SkyboxFragmentShaderCode.glsl");
     sendDataToOpenGL();
     
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glDepthFunc(GL_LESS);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_CULL_FACE);
+//    glDepthFunc(GL_LESS);
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {

@@ -22,7 +22,7 @@ void main()
     vec4 newNormal = model * vec4(normal, 0.0);
     gl_Position =  projection * view * newPosition;
 
-//    mat3 tempMatrix = mat3(model * view);
+    mat3 tempMatrix = mat3(model * view);
 //    vec3 tangentCamera = tempMatrix * normalize(tangent);
 //    vec3 bitangentCamera = tempMatrix * normalize(bitangent);
 //    vec3 normalCamera = tempMatrix * normalize(normal);
