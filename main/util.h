@@ -275,36 +275,39 @@ std::string readShaderCode(const char* fileName) {
 	);
 }
 
-void installShaders() {
-	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+GLuint installShaders(const char* vertexShader, const char* fragmentShader)
+{
+    GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+    GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
-	const GLchar* adapter[1];
-	//adapter[0] = vertexShaderCode;
-	std::string temp = readShaderCode("VertexShaderCode.glsl");
-	adapter[0] = temp.c_str();
-	glShaderSource(vertexShaderID, 1, adapter, 0);
-	//adapter[0] = fragmentShaderCode;
-	temp = readShaderCode("FragmentShaderCode.glsl");
-	adapter[0] = temp.c_str();
-	glShaderSource(fragmentShaderID, 1, adapter, 0);
+    const GLchar* adapter[1];
+    string temp = readShaderCode(vertexShader);
+    adapter[0] = temp.c_str();
+    glShaderSource(vertexShaderID, 1, adapter, 0);
+    temp = readShaderCode(fragmentShader);
+    adapter[0] = temp.c_str();
+    glShaderSource(fragmentShaderID, 1, adapter, 0);
 
-	glCompileShader(vertexShaderID);
-	glCompileShader(fragmentShaderID);
+    glCompileShader(vertexShaderID);
+    glCompileShader(fragmentShaderID);
 
-	if (!checkShaderStatus(vertexShaderID) || !checkShaderStatus(fragmentShaderID))
-		return;
+    if (!checkShaderStatus(vertexShaderID) || !checkShaderStatus(fragmentShaderID))
+        return 0;
 
-	programID = glCreateProgram();
-	glAttachShader(programID, vertexShaderID);
-	glAttachShader(programID, fragmentShaderID);
-	glLinkProgram(programID);
+    GLuint programID = glCreateProgram();
+    glAttachShader(programID, vertexShaderID);
+    glAttachShader(programID, fragmentShaderID);
+    glLinkProgram(programID);
 
-	if (!checkProgramStatus(programID))
-		return;
-	glUseProgram(programID);
+    if (!checkProgramStatus(programID))
+        return 0;
 
+    glDeleteShader(vertexShaderID);
+    glDeleteShader(fragmentShaderID);
+
+    return programID;
 }
+
 
 void get_OpenGL_info()
 {
@@ -373,7 +376,6 @@ void generateBuffer(object obj, pipeline* buffer, GLuint texture) {
     glBufferData(GL_ARRAY_BUFFER, obj.bitangents.size() * sizeof(glm::vec3), &obj.bitangents[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    
 
 }
 
