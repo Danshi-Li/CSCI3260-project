@@ -11,8 +11,8 @@
 void Shader::setupShader(const char* vertexPath, const char* fragmentPath)
 {
 	// similar to the installShaders() in the assignment 1
-	unsigned int vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-	unsigned int fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
 	const GLchar* vCode;
 	std::string temp = readShaderCode(vertexPath);

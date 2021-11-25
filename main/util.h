@@ -119,7 +119,7 @@ object loadOBJ(const char* path)
             char stupidBuffer[1000];
             fgets(stupidBuffer, 1000, file);
         }
-
+        
     }
 
     glm::vec3 tangent, bitangent;
@@ -164,7 +164,8 @@ object loadOBJ(const char* path)
         obj.tangents.push_back(tangent);
         obj.bitangents.push_back(bitangent);
     }
-
+    std::cout << "Load obj status code" << std::endl;
+    std::cout << glGetError() << std::endl;
     return obj;
 }
 
@@ -220,6 +221,9 @@ GLuint loadTexture(const char* path){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
     delete[] image;
+
+    std::cout << "Load texture status code" << std::endl;
+    std::cout << glGetError() << std::endl;
     return textureID;
 
 }
