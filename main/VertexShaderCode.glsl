@@ -29,7 +29,6 @@ void main()
     vec3 tangentCamera = tempMatrix * normalize(tangent);
     vec3 bitangentCamera = tempMatrix * normalize(bitangent);
     vec3 normalCamera = tempMatrix * normalize(normal);
-
     vertexFrag = newPosition.xyz;
     uvFrag = vertexUV;
     normalFrag = newNormal.xyz;

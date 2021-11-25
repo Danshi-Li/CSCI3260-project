@@ -2,6 +2,7 @@
 #version 330
 #elif defined _WIN32 || defined _WIN64
 #version 430
+#endif
 
 
 #define num 3
@@ -17,14 +18,14 @@ uniform sampler2D mapping_N;
 uniform bool normalMapping;
 
 // light control
-uniform float abientControl;
-uniform float diffuseControl;
-uniform float specularControl;
+//uniform float abientControl;
+//uniform float diffuseControl;
+//uniform float specularControl;
 
 // light parameter
-uniform vec3 viewPort;
-uniform vec3 lightSource[num];
-uniform vec3 lightColor[num];
+//uniform vec3 viewPort;
+//uniform vec3 lightSource[num];
+//uniform vec3 lightColor[num];
 
 // attenuation coeffient
 float constantCoeffient = 0.3f;
@@ -82,5 +83,5 @@ void main()
 //
 //    vec3 color = ambient * abientControl + diffuse * diffuseControl + specular * specularControl;
 //    colorFrag = vec4(color, 1.0);
-    vec4 colorFrag = vec4(1.0,1.0,1.0,1.0);
+    vec4 colorFrag = vec4(0.5,0.5,0.5,1.0);
 }
