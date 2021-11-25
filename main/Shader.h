@@ -26,7 +26,7 @@ public:
     void setBool(const std::string& name, bool value) const;
 
 private:
-	unsigned int ID = 0;
+	GLuint ID = 0;
 
 	std::string readShaderCode(const char* fileName) const;
 	bool checkShaderStatus(GLuint shaderID) const;

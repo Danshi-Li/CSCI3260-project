@@ -119,7 +119,7 @@ object loadOBJ(const char* path)
             char stupidBuffer[1000];
             fgets(stupidBuffer, 1000, file);
         }
-
+        
     }
 
     glm::vec3 tangent, bitangent;
@@ -164,7 +164,8 @@ object loadOBJ(const char* path)
         obj.tangents.push_back(tangent);
         obj.bitangents.push_back(bitangent);
     }
-
+    std::cout << "Load obj status code" << std::endl;
+    std::cout << glGetError() << std::endl;
     return obj;
 }
 
@@ -220,6 +221,9 @@ GLuint loadTexture(const char* path){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
     delete[] image;
+
+    std::cout << "Load texture status code" << std::endl;
+    std::cout << glGetError() << std::endl;
     return textureID;
 
 }
@@ -333,43 +337,41 @@ void get_OpenGL_info()
 //}
 
 
-pipeline generateBuffer(object obj, GLuint texture) {
+void generateBuffer(object obj, pipeline* buffer, GLuint texture) {
 	//TODO: initialize the buffers corresponding to an object to be painted.
 	//      refer to the function generateVAOVBO in https://gitlab.com/cynthia0525/csci3260/-/blob/master/Course%20Project/model.h to get an idea what we want to implement
-    pipeline buffer;
-    buffer.texture = texture;
-    buffer.size = obj.vertices.size();
-    buffer.collision = false;
-    buffer.normalMapping = false;
-    glGenVertexArrays(1, &buffer.vao);
-    glBindVertexArray(buffer.vao);
-    glGenBuffers(1, &buffer.vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer.vbo);
+    buffer->texture = texture;
+    buffer->size = obj.vertices.size();
+    buffer->collision = false;
+    buffer->normalMapping = false;
+    glGenVertexArrays(1, &buffer->vao);
+    glBindVertexArray(buffer->vao);
+    glGenBuffers(1, &buffer->vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
     glBufferData(GL_ARRAY_BUFFER, obj.vertices.size() * sizeof(glm::vec3), &obj.vertices[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glGenBuffers(1, &buffer.uvbo);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer.uvbo);
+    glGenBuffers(1, &buffer->uvbo);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->uvbo);
     glBufferData(GL_ARRAY_BUFFER, obj.uvs.size() * sizeof(glm::vec2), &obj.uvs[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glGenBuffers(1, &buffer.nbo);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer.nbo);
+    glGenBuffers(1, &buffer->nbo);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->nbo);
     glBufferData(GL_ARRAY_BUFFER, obj.normals.size() * sizeof(glm::vec3), &obj.normals[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glGenBuffers(1, &buffer.tbo);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer.tbo);
+    glGenBuffers(1, &buffer->tbo);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->tbo);
     glBufferData(GL_ARRAY_BUFFER, obj.tangents.size() * sizeof(glm::vec3), &obj.tangents[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glGenBuffers(1, &buffer.btbo);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer.btbo);
+    glGenBuffers(1, &buffer->btbo);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->btbo);
     glBufferData(GL_ARRAY_BUFFER, obj.bitangents.size() * sizeof(glm::vec3), &obj.bitangents[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     
-    return buffer;
 
 }
 

@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{745171E7-AF7D-3DB2-A842-97CFB9752A4A}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\code;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\.;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\contrib\zlib;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\code;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\.;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\contrib\zlib;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\code;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\.;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\contrib\zlib;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\code;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\.;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\contrib\zlib;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1 -BC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build --check-stamp-file C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config-version.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp.pc.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-debug.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-release.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeSystem.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindDirectX.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindPkgMacros.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindZLIB.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\PrecompiledHeader.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\cmake_uninstall.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake\HunterGate.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include\assimp\config.h.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\revision.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1 -BC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build --check-stamp-file C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config-version.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp.pc.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-debug.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-release.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeSystem.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindDirectX.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindPkgMacros.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindZLIB.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\PrecompiledHeader.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\cmake_uninstall.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake\HunterGate.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include\assimp\config.h.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\revision.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1 -BC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build --check-stamp-file C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config-version.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp.pc.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-debug.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-release.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeSystem.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindDirectX.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindPkgMacros.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindZLIB.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\PrecompiledHeader.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\cmake_uninstall.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake\HunterGate.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include\assimp\config.h.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\revision.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1 -BC:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build --check-stamp-file C:/Users/86186/Desktop/academics/csci3260/assimp-5.0.1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeParseArguments.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\FindPkgConfig.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config-version.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp-config.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimp.pc.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-debug.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets-release.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\assimpTargets.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\3.21.4\CMakeSystem.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindDirectX.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindPkgMacros.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\FindZLIB.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\PrecompiledHeader.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake-modules\cmake_uninstall.cmake.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\cmake\HunterGate.cmake;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\include\assimp\config.h.in;C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\revision.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\ZERO_CHECK.vcxproj">
+      <Project>{AAA24FA2-34A8-35EE-B895-F9C5C40902E9}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\irrXML\IrrXML.vcxproj">
+      <Project>{C28186A9-EAF8-37F3-8CB6-4E76C31ADAF1}</Project>
+      <Name>IrrXML</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\code\assimp.vcxproj">
+      <Project>{4499A942-5D50-3E54-92BE-CF0015B2A4F9}</Project>
+      <Name>assimp</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\tools\assimp_cmd\assimp_cmd.vcxproj">
+      <Project>{82842556-3143-3CC7-BF3B-7B020E6478E4}</Project>
+      <Name>assimp_cmd</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\test\unit.vcxproj">
+      <Project>{8B704D9E-D82C-3DDB-9CA1-E93516979471}</Project>
+      <Name>unit</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\zlib\zlib.vcxproj">
+      <Project>{C4729723-0CD6-356C-84B5-99F3F30F21B1}</Project>
+      <Name>zlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\86186\Desktop\academics\csci3260\assimp-5.0.1\build\contrib\zlib\zlibstatic.vcxproj">
+      <Project>{FAC3EB8A-5E8F-3402-95DA-89E2F0BB6679}</Project>
+      <Name>zlibstatic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

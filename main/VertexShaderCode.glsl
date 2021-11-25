@@ -1,8 +1,6 @@
-#ifdef __APPLE__
-#version 330
-#elif defined _WIN32 || defined _WIN64
+
 #version 430
-#endif
+
 
 in layout(location = 0) vec3 position;
 in layout(location = 1) vec2 vertexUV;
@@ -29,7 +27,6 @@ void main()
     vec3 tangentCamera = tempMatrix * normalize(tangent);
     vec3 bitangentCamera = tempMatrix * normalize(bitangent);
     vec3 normalCamera = tempMatrix * normalize(normal);
-
     vertexFrag = newPosition.xyz;
     uvFrag = vertexUV;
     normalFrag = newNormal.xyz;

@@ -1,0 +1,36 @@
+﻿main.obj : error LNK2019: 无法解析的外部符号 __imp__glewInit@0，函数 "void __cdecl initializedGL(void)" (?initializedGL@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwInit，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwTerminate，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwWindowHint，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwCreateWindow，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwWindowShouldClose，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetWindowShouldClose，函数 "void __cdecl key_callback(struct GLFWwindow *,int,int,int,int)" (?key_callback@@YAXPAUGLFWwindow@@HHHH@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetFramebufferSizeCallback，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwPollEvents，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetKeyCallback，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetMouseButtonCallback，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetCursorPosCallback，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSetScrollCallback，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwMakeContextCurrent，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 _glfwSwapBuffers，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall Shader::setupShader(char const *,char const *)" (?setupShader@Shader@@QAEXPBD0@Z)，函数 "void __cdecl initializedGL(void)" (?initializedGL@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall Shader::use(void)const " (?use@Shader@@QBEXXZ)，函数 "void __cdecl initializedGL(void)" (?initializedGL@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall Shader::setMat4(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,struct glm::mat<4,4,float,0> &)const " (?setMat4@Shader@@QBEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AAU?$mat@$03$03M$0A@@glm@@@Z)，函数 "void __cdecl paintGL(void)" (?paintGL@@YAXXZ) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall Shader::setInt(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,int)const " (?setInt@Shader@@QBEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@Z)，函数 "void __cdecl drawVAO(struct PIPELINE)" (?drawVAO@@YAXUPIPELINE@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall Shader::setBool(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,bool)const " (?setBool@Shader@@QBEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@_N@Z)，函数 "void __cdecl drawVAO(struct PIPELINE)" (?drawVAO@@YAXUPIPELINE@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewActiveTexture，函数 "void __cdecl drawVAO(struct PIPELINE)" (?drawVAO@@YAXUPIPELINE@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewBindBuffer，函数 "struct PIPELINE __cdecl generateBuffer(struct OBJECT,unsigned int)" (?generateBuffer@@YA?AUPIPELINE@@UOBJECT@@I@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewBufferData，函数 "struct PIPELINE __cdecl generateBuffer(struct OBJECT,unsigned int)" (?generateBuffer@@YA?AUPIPELINE@@UOBJECT@@I@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGenBuffers，函数 "struct PIPELINE __cdecl generateBuffer(struct OBJECT,unsigned int)" (?generateBuffer@@YA?AUPIPELINE@@UOBJECT@@I@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewEnableVertexAttribArray，函数 "struct PIPELINE __cdecl generateBuffer(struct OBJECT,unsigned int)" (?generateBuffer@@YA?AUPIPELINE@@UOBJECT@@I@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGetProgramInfoLog，函数 "bool __cdecl checkProgramStatus(unsigned int)" (?checkProgramStatus@@YA_NI@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGetProgramiv，函数 "bool __cdecl checkProgramStatus(unsigned int)" (?checkProgramStatus@@YA_NI@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGetShaderInfoLog，函数 "bool __cdecl checkShaderStatus(unsigned int)" (?checkShaderStatus@@YA_NI@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGetShaderiv，函数 "bool __cdecl checkShaderStatus(unsigned int)" (?checkShaderStatus@@YA_NI@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewVertexAttribPointer，函数 "struct PIPELINE __cdecl generateBuffer(struct OBJECT,unsigned int)" (?generateBuffer@@YA?AUPIPELINE@@UOBJECT@@I@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGenerateMipmap，函数 "unsigned int __cdecl loadTexture(char const *)" (?loadTexture@@YAIPBD@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewBindVertexArray，函数 "void __cdecl drawVAO(struct PIPELINE)" (?drawVAO@@YAXUPIPELINE@@@Z) 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 __imp____glewGenVertexArrays，函数 "struct PIPELINE __cdecl generateBuffer(struct OBJECT,unsigned int)" (?generateBuffer@@YA?AUPIPELINE@@UOBJECT@@I@Z) 中引用了该符号
+Dependencies\GLFW\glfw3.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+Dependencies\glew\glew32.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+C:\Users\86186\Desktop\academics\csci3260\project\CSCI3260-project\windows-project\3260Proj\Debug\Project1.exe : fatal error LNK1120: 33 个无法解析的外部命令

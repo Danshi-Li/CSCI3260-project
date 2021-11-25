@@ -12,7 +12,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Shader.h"
-//#include "Texture.h"
+#include "Shader.cpp"
+#include "Texture.h"
+#include "Texture.cpp"
 
 
 #include <iostream>
@@ -46,12 +48,14 @@ const int SCR_HEIGHT = 600;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 Shader generalShader;
+object obj;
+GLuint tex;
 
 //camera setting
 glm::vec3 cameraPos   = glm::vec3(0.0f, 2.0f,  5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f,  0.0f);
-glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
 glm::vec3 up = glm::vec3(0.0f, 1.0f,  0.0f);
 glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
 glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
@@ -64,10 +68,16 @@ int left_press_num = 0;
 int right_press_num = 0;
 bool click = false;
 // key input
-int up_press_num = 0;
-int down_press_num = 0;
+int up_key_num = 0;
+int right_key_num = 0;
 int w_press_num = 0;
 int s_press_num = 0;
+
+//light parameters
+float ambient = 0.15;
+float diffuse = 0.65;
+float specular = 0.35;
+
 
 // pipelines (buffers) for objects to draw
 pipeline planet;
@@ -107,14 +117,13 @@ void drawVAO(pipeline buffer) {
 //
 //********** The OpenGL pipeline functions **********
 void sendDataToOpenGL() {
-    object obj;
-    GLuint tex;
     obj = loadOBJ("object/planet.obj");
     tex = loadTexture("texture/earthTexture.bmp");
-    planet = generateBuffer(obj, tex);
+    generateBuffer(obj, &planet, tex);
     planet.normalTexture = loadTexture("texture/earthNormal.bmp");
     planet.normalMapping = true;
     clear(&obj);
+    std::cout << "Finished sendDataToOpenGL" << std::endl;
 }
 
 
@@ -122,24 +131,50 @@ void paintGL(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0f);
+
+    // spacecraft modelling
+    glm::mat4 translateMatrix = glm::translate(mat4(), vec3(up_key_num, 0.5, 20 + right_key_num));
+    glm::mat4 rotateMatrix = glm::rotate(mat4(), glm::radians(45.0f), vec3(0, 1, 0));
+    glm::mat4 scaleMatrix = glm::scale(mat4(), vec3(0.0005f, 0.0005f, 0.0005f));
+    glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
+    // world space modelling
+    glm::vec4 camera = spacecraftModel * vec4(0.0f, 0.5f, 0.8f, 1.0f);
+    glm::vec4 viewport = spacecraftModel * vec4(0.0f, 0.0f, -0.8f, 1.0f);
+
+    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(viewport), glm::vec3(0, 1, 0));
+    generalShader.setMat4("view", viewMatrix);
     
-    glm::mat4 viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    generalShader.setMat4("viewMatrix", viewMatrix);
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
+    generalShader.setMat4("projection", projectionMatrix);
     
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 20.0f);
-    generalShader.setMat4("projectionMatrix", projectionMatrix);
-    
+    //lights
+    generalShader.setFloat("ambientControl", ambient);
+    generalShader.setFloat("diffuseControl", diffuse);
+    generalShader.setFloat("specularControl", specular);
+    generalShader.setVec3("viewPort", glm::vec3(up_key_num, 1.25, 23 + right_key_num));
+    generalShader.setVec3("lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
+    generalShader.setVec3("lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
+    generalShader.setVec3("lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
+    generalShader.setVec3("lightColor[1]", glm::vec3(0.5f, 0.5f, 0.5f));
+    generalShader.setVec3("lightSource[2]", glm::vec3(10.0f, 15.0f, -25.0f));
+    generalShader.setVec3("lightColor[2]", glm::vec3(1.0f, 0.5f, 0.0f));
+
+
+
     //camera
     
     
-    
+    //the planet object
     glm::mat4 modelTransformMatrix;
+    translateMatrix = glm::translate(mat4(), vec3(0, 0, -20));
+    rotateMatrix = glm::rotate(mat4(), glm::radians(45.0f), vec3(0, 1, 0));
+    scaleMatrix = glm::scale(mat4(), vec3(0.5f, 0.5f, 0.5f));
+
     
-    modelTransformMatrix = glm::mat4(1.0f);
+    modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+    generalShader.setMat4("model", modelTransformMatrix);
     drawVAO(planet);
-    
-    
-    
+    std::cout << "Finished paintGL" << std::endl;
 }
 
 
@@ -170,6 +205,7 @@ void initializedGL(void) //run only once
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {
+    /*
     float xoffset = 0.0f;
     float yoffset = 0.0f;
     if (click){
@@ -198,7 +234,9 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
         direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         cameraFront = glm::normalize(direction);
     }
+    */
 }
+
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -207,8 +245,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
-    if(key == GLFW_KEY_LEFT && action == GLFW_PRESS) left_press_num += 1;
-    if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS) right_press_num += 1;
+    if(key == GLFW_KEY_LEFT && action == GLFW_PRESS) right_key_num -= 1;
+    if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS) right_key_num += 1;
+    if (key == GLFW_KEY_UP && action == GLFW_PRESS) up_key_num += 1;
+    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) up_key_num -= 1;
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+
 }
 
 //
@@ -224,6 +272,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	/* glfw: configure; necessary for MAC */
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
