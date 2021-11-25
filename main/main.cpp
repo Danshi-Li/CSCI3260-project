@@ -95,16 +95,16 @@ void setupTransformMatrix(string obj) {
 }
 
 void drawVAO(pipeline buffer) {
-    generalShader.setInt("mapping", 0);
+    setInt(programID,"mapping", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, buffer.texture);
     if (buffer.normalMapping) {
-        generalShader.setBool("normalMapping", true);
-        generalShader.setInt("mapping_N", 1);
+        setBool(programID,"normalMapping", true);
+        setInt(programID,"mapping_N", 1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, buffer.normalTexture);
     }
-    else generalShader.setBool("normalMapping", false);
+    else setBool(programID,"normalMapping", false);
     glBindVertexArray(buffer.vao);
     glDrawArrays(GL_TRIANGLES, 0, buffer.size);
 }
@@ -142,22 +142,22 @@ void paintGL(void) {
     glm::vec4 viewport = spacecraftModel * vec4(0.0f, 0.0f, -0.8f, 1.0f);
 
     glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(viewport), glm::vec3(0, 1, 0));
-    generalShader.setMat4("view", viewMatrix);
+    setMat4(programID,"view", viewMatrix);
     
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
-    generalShader.setMat4("projection", projectionMatrix);
+    setMat4(programID,"projection", projectionMatrix);
     
     //lights
-    generalShader.setFloat("ambientControl", ambient);
-    generalShader.setFloat("diffuseControl", diffuse);
-    generalShader.setFloat("specularControl", specular);
-    generalShader.setVec3("viewPort", glm::vec3(up_key_num, 1.25, 23 + right_key_num));
-    generalShader.setVec3("lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
-    generalShader.setVec3("lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
-    generalShader.setVec3("lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
-    generalShader.setVec3("lightColor[1]", glm::vec3(0.5f, 0.5f, 0.5f));
-    generalShader.setVec3("lightSource[2]", glm::vec3(10.0f, 15.0f, -25.0f));
-    generalShader.setVec3("lightColor[2]", glm::vec3(1.0f, 0.5f, 0.0f));
+    setFloat(programID,"ambientControl", ambient);
+    setFloat(programID,"diffuseControl", diffuse);
+    setFloat(programID,"specularControl", specular);
+    setVec3(programID,"viewPort", glm::vec3(up_key_num, 1.25, 23 + right_key_num));
+    setVec3(programID,"lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
+    setVec3(programID,"lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
+    setVec3(programID,"lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
+    setVec3(programID,"lightColor[1]", glm::vec3(0.5f, 0.5f, 0.5f));
+    setVec3(programID,"lightSource[2]", glm::vec3(10.0f, 15.0f, -25.0f));
+    setVec3(programID,"lightColor[2]", glm::vec3(1.0f, 0.5f, 0.0f));
 
 
 
@@ -172,7 +172,7 @@ void paintGL(void) {
 
     
     modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
-    generalShader.setMat4("model", modelTransformMatrix);
+    setMat4(programID,"model", modelTransformMatrix);
     drawVAO(planet);
     std::cout << "Finished paintGL" << std::endl;
 }
@@ -191,9 +191,9 @@ void initializedGL(void) //run only once
 	}
 
 	get_OpenGL_info();
-    generalShader.setupShader("VertexShaderCode.glsl", "FragmentShaderCode.glsl");
-    generalShader.use();
-//    installShaders();
+   /* generalShader.setupShader("VertexShaderCode.glsl", "FragmentShaderCode.glsl");
+    generalShader.use();*/
+    installShaders();
     
 	sendDataToOpenGL();
 
