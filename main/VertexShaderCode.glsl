@@ -1,8 +1,6 @@
-#ifdef __APPLE__
-#version 330
-#elif defined _WIN32 || defined _WIN64
+
 #version 430
-#endif
+
 
 in layout(location = 0) vec3 position;
 in layout(location = 1) vec2 vertexUV;

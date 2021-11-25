@@ -52,7 +52,7 @@ object obj;
 GLuint tex;
 
 //camera setting
-glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
+glm::vec3 cameraPos   = glm::vec3(0.0f, 2.0f,  5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f,  0.0f);
 glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
@@ -72,6 +72,12 @@ int up_key_num = 0;
 int right_key_num = 0;
 int w_press_num = 0;
 int s_press_num = 0;
+
+//light parameters
+float ambient = 0.15;
+float diffuse = 0.65;
+float specular = 0.35;
+
 
 // pipelines (buffers) for objects to draw
 pipeline planet;
@@ -117,6 +123,7 @@ void sendDataToOpenGL() {
     planet.normalTexture = loadTexture("texture/earthNormal.bmp");
     planet.normalMapping = true;
     clear(&obj);
+    std::cout << "Finished sendDataToOpenGL" << std::endl;
 }
 
 
@@ -124,7 +131,6 @@ void paintGL(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0f);
-    generalShader.use();
 
     // spacecraft modelling
     glm::mat4 translateMatrix = glm::translate(mat4(), vec3(up_key_num, 0.5, 20 + right_key_num));
@@ -138,13 +144,27 @@ void paintGL(void) {
     glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(viewport), glm::vec3(0, 1, 0));
     generalShader.setMat4("view", viewMatrix);
     
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 20.0f);
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
     generalShader.setMat4("projection", projectionMatrix);
     
+    //lights
+    generalShader.setFloat("ambientControl", ambient);
+    generalShader.setFloat("diffuseControl", diffuse);
+    generalShader.setFloat("specularControl", specular);
+    generalShader.setVec3("viewPort", glm::vec3(up_key_num, 1.25, 23 + right_key_num));
+    generalShader.setVec3("lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
+    generalShader.setVec3("lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
+    generalShader.setVec3("lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
+    generalShader.setVec3("lightColor[1]", glm::vec3(0.5f, 0.5f, 0.5f));
+    generalShader.setVec3("lightSource[2]", glm::vec3(10.0f, 15.0f, -25.0f));
+    generalShader.setVec3("lightColor[2]", glm::vec3(1.0f, 0.5f, 0.0f));
+
+
+
     //camera
     
     
-    
+    //the planet object
     glm::mat4 modelTransformMatrix;
     translateMatrix = glm::translate(mat4(), vec3(0, 0, -20));
     rotateMatrix = glm::rotate(mat4(), glm::radians(45.0f), vec3(0, 1, 0));
@@ -154,7 +174,7 @@ void paintGL(void) {
     modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
     generalShader.setMat4("model", modelTransformMatrix);
     drawVAO(planet);
-    
+    std::cout << "Finished paintGL" << std::endl;
 }
 
 
@@ -185,6 +205,7 @@ void initializedGL(void) //run only once
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {
+    /*
     float xoffset = 0.0f;
     float yoffset = 0.0f;
     if (click){
@@ -213,7 +234,9 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
         direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         cameraFront = glm::normalize(direction);
     }
+    */
 }
+
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -249,6 +272,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 	/* glfw: configure; necessary for MAC */
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
