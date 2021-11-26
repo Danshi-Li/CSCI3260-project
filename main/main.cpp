@@ -125,6 +125,8 @@ void paintGL(void) {
     setMat4(programID, "projection", projectionMatrix);
     
     glm::mat4 modelTransformMatrix = glm::mat4(1.0f);
+    modelTransformMatrix = glm::translate(modelTransformMatrix, glm::vec3(0.0f, -1.0f,  0.0f));
+    modelTransformMatrix = glm::scale(modelTransformMatrix, glm::vec3(0.1f, 0.1f,  0.1f));
 //    // spacecraft modelling
 //    glm::mat4 translateMatrix = glm::translate(mat4(), vec3(up_key_num, 0.5, 20 + right_key_num));
 //    glm::mat4 rotateMatrix = glm::rotate(mat4(), glm::radians(45.0f), vec3(0, 1, 0));
