@@ -147,15 +147,15 @@ void paintGL(void) {
     glm::mat4 modelTransformMatrix;
 
     //// spacecraft modelling
-    glm::mat4 translateMatrix = glm::mat4(1.0f);
-    glm::mat4 rotateMatrix = glm::mat4(1.0f);
-    glm::mat4 scaleMatrix = glm::mat4(1.0f);
+    glm::mat4 translateMatrix = glm::translate(mat4(1.0f), vec3(-right_key_num, 0.5, 20 - up_key_num));
+    glm::mat4 rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(0.0f), vec3(0, 1, 0));
+    glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.0005f, 0.0005f, 0.0005f));
     glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
     // world space modelling
-    glm::vec4 camera = spacecraftModel * vec4(0.0f, 5.0f, 8.0f, 1.0f);
+    glm::vec4 camera = spacecraftModel * vec4(0.0f, 0.5f, 0.8f, 1.0f);
     glm::vec4 viewport = spacecraftModel * vec4(0.0f, 0.0f, -0.8f, 1.0f);
 
-    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(camera+vec4(cameraFront,1.0f)), glm::vec3(0, 1, 0));
+    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(viewport), glm::vec3(0, 1, 0));
     setMat4(programID,"view", viewMatrix);
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
     setMat4(programID,"projection", projectionMatrix);
@@ -164,7 +164,7 @@ void paintGL(void) {
     setFloat(programID,"ambientControl", ambient);
     setFloat(programID,"diffuseControl", diffuse);
     setFloat(programID,"specularControl", specular);
-    setVec3(programID,"viewPort", cameraPos);
+    setVec3(programID,"viewPort", glm::vec3(right_key_num, 1.25, 23 + -up_key_num));
     setVec3(programID,"lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
     setVec3(programID,"lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
     setVec3(programID,"lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
@@ -182,24 +182,24 @@ void paintGL(void) {
     
     
     //the planet object
-    //translateMatrix = glm::translate(mat4(), vec3(0, 0, -20));
-    //rotateMatrix = glm::rotate(mat4(), glm::radians(planetRotation), vec3(0, 1, 0));
-    //scaleMatrix = glm::scale(mat4(), vec3(0.5f, 0.5f, 0.5f));
+    translateMatrix = glm::translate(mat4(1.0f), vec3(0, 0, -20));
+    rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(planetRotation), vec3(0, 1, 0));
+    scaleMatrix = glm::scale(mat4(1.0f), vec3(0.5f, 0.5f, 0.5f));
     modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
     setMat4(programID,"model", modelTransformMatrix);
     drawVAO(planet);
 
-    //the asteroids
+   //the asteroids
    srand(3260);
-    GLfloat radius = 30;
+    GLfloat radius = 4;
     for (int i = 0; i < ASTEROID; i++) {
         GLfloat offset = rand() % 10 / 30.0f;
         GLfloat theta = (float)i / (float)ASTEROID * 360 + asteroidRotation;
-        translateMatrix = glm::translate(mat4(), vec3(sin(theta) * radius + offset, 0.55 - offset, 15 + cos(theta) * radius * 0.5 + offset));
+        translateMatrix = glm::translate(mat4(1.0f), vec3(sin(theta) * radius + offset, 0.55 - offset, -20 + cos(theta) * radius * 0.5 + offset));
         GLfloat phi = rand() % 360 + planetRotation;
-        rotateMatrix = glm::rotate(mat4(), glm::radians(phi), vec3(offset, offset, offset));
+        rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(phi), vec3(offset, offset, offset));
         GLfloat scale = rand() % 10 / 200.0f;
-        scaleMatrix = glm::scale(mat4(), vec3(scale, scale, scale));
+        scaleMatrix = glm::scale(mat4(1.0f), vec3(scale, scale, scale));
         modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
         setMat4(programID, "model", modelTransformMatrix);
         drawVAO(asteroids[i]);
