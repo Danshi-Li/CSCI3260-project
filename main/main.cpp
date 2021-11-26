@@ -4,18 +4,12 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #elif defined _WIN32 || defined _WIN64
-#include "Dependencies/glew/glew.h"
-#include "Dependencies/GLFW/glfw3.h"
-#include "Dependencies/glm/glm.hpp"
-#include "Dependencies/glm/gtc/matrix_transform.hpp"
+#include "Dependencies\glew\glew.h"
+#include "Dependencies\freeglut\include\GL\freeglut.h"
+#include "Dependencies\glm\glm.hpp"
+#include "Dependencies\glm\gtc\matrix_transform.hpp"
+#include "Dependencies\glm\gtc\type_ptr.hpp"
 #endif
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "Shader.h"
-#include "Shader.cpp"
-#include "Texture.h"
-#include "Texture.cpp"
-
 
 #include <iostream>
 #include <fstream>
@@ -27,9 +21,10 @@ using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 
+
 //********** pre-provided utility functions are written in util.h **********
 #include "util.h"
-#include "callbacks.h"
+#include "Shader.h"
 
 
 
@@ -47,12 +42,13 @@ const int SCR_WIDTH = 800;
 const int SCR_HEIGHT = 600;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
-Shader generalShader;
-object obj;
-GLuint tex;
+#define ASTEROID 200
+
+GLint programID;
+pipeline planet,asteroids[ASTEROID];
 
 //camera setting
-glm::vec3 cameraPos   = glm::vec3(0.0f, 2.0f,  5.0f);
+glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f,  0.0f);
 glm::vec3 cameraDirection = glm::normalize(cameraTarget - cameraPos);
@@ -73,15 +69,13 @@ int right_key_num = 0;
 int w_press_num = 0;
 int s_press_num = 0;
 
+//planet rotation
+float timer, planetRotation, asteroidRotation;
+
 //light parameters
 float ambient = 0.15;
 float diffuse = 0.65;
 float specular = 0.35;
-
-
-// pipelines (buffers) for objects to draw
-pipeline planet;
-
 
 
 //
@@ -104,26 +98,36 @@ void drawVAO(pipeline buffer) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, buffer.normalTexture);
     }
-    else setBool(programID,"normalMapping", false);
+    else {
+        setBool(programID, "normalMapping", false);
+    }
     glBindVertexArray(buffer.vao);
-    glDrawArrays(GL_TRIANGLES, 0, buffer.size);
+    glDrawArrays(GL_TRIANGLES, 0, buffer.size);  //会不会是这里Arrays而不是Elements？不像。
+    //glDrawElements(GL_TRIANGLES, buffer.size, GL_UNSIGNED_INT, 0);
 }
-
-
-
 
 
 //
 //
 //********** The OpenGL pipeline functions **********
 void sendDataToOpenGL() {
-    obj = loadOBJ("object/planet.obj");
+    object obj;
+    GLuint tex;
+    // define planet
+    loadOBJ("object/planet.obj", &obj);
     tex = loadTexture("texture/earthTexture.bmp");
     generateBuffer(obj, &planet, tex);
     planet.normalTexture = loadTexture("texture/earthNormal.bmp");
     planet.normalMapping = true;
     clear(&obj);
-    std::cout << "Finished sendDataToOpenGL" << std::endl;
+
+    // define asteroid ring
+    loadOBJ("object/rock.obj", &obj);
+    tex = loadTexture("texture/rockTexture.bmp");
+    for (int i = 0; i < ASTEROID; i++)
+        generateBuffer(obj, &asteroids[i], tex);
+    clear(&obj);
+
 }
 
 
@@ -131,27 +135,36 @@ void paintGL(void) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0f);
+    glEnable(GL_DEPTH_TEST);
+    glUseProgram(programID);
+    
+    //glm::mat4 viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    //setMat4(programID, "view", viewMatrix);
+    //
+    //glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 20.0f);
+    //setMat4(programID, "projection", projectionMatrix);
 
-    // spacecraft modelling
-    glm::mat4 translateMatrix = glm::translate(mat4(), vec3(up_key_num, 0.5, 20 + right_key_num));
-    glm::mat4 rotateMatrix = glm::rotate(mat4(), glm::radians(45.0f), vec3(0, 1, 0));
-    glm::mat4 scaleMatrix = glm::scale(mat4(), vec3(0.0005f, 0.0005f, 0.0005f));
+    glm::mat4 modelTransformMatrix;
+
+    //// spacecraft modelling
+    glm::mat4 translateMatrix = glm::mat4(1.0f);
+    glm::mat4 rotateMatrix = glm::mat4(1.0f);
+    glm::mat4 scaleMatrix = glm::mat4(1.0f);
     glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
     // world space modelling
-    glm::vec4 camera = spacecraftModel * vec4(0.0f, 0.5f, 0.8f, 1.0f);
+    glm::vec4 camera = spacecraftModel * vec4(0.0f, 5.0f, 8.0f, 1.0f);
     glm::vec4 viewport = spacecraftModel * vec4(0.0f, 0.0f, -0.8f, 1.0f);
 
-    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(viewport), glm::vec3(0, 1, 0));
+    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(camera+vec4(cameraFront,1.0f)), glm::vec3(0, 1, 0));
     setMat4(programID,"view", viewMatrix);
-    
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
     setMat4(programID,"projection", projectionMatrix);
-    
+
     //lights
     setFloat(programID,"ambientControl", ambient);
     setFloat(programID,"diffuseControl", diffuse);
     setFloat(programID,"specularControl", specular);
-    setVec3(programID,"viewPort", glm::vec3(up_key_num, 1.25, 23 + right_key_num));
+    setVec3(programID,"viewPort", cameraPos);
     setVec3(programID,"lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
     setVec3(programID,"lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
     setVec3(programID,"lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
@@ -161,20 +174,43 @@ void paintGL(void) {
 
 
 
-    //camera
+    //timer for rotation
+    timer = (float)glutGet(GLUT_ELAPSED_TIME) / 25;
+    planetRotation = timer;
+    asteroidRotation = timer / 100;
+
     
     
     //the planet object
-    glm::mat4 modelTransformMatrix;
-    translateMatrix = glm::translate(mat4(), vec3(0, 0, -20));
-    rotateMatrix = glm::rotate(mat4(), glm::radians(45.0f), vec3(0, 1, 0));
-    scaleMatrix = glm::scale(mat4(), vec3(0.5f, 0.5f, 0.5f));
-
-    
+    //translateMatrix = glm::translate(mat4(), vec3(0, 0, -20));
+    //rotateMatrix = glm::rotate(mat4(), glm::radians(planetRotation), vec3(0, 1, 0));
+    //scaleMatrix = glm::scale(mat4(), vec3(0.5f, 0.5f, 0.5f));
     modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
     setMat4(programID,"model", modelTransformMatrix);
     drawVAO(planet);
-    std::cout << "Finished paintGL" << std::endl;
+
+    //the asteroids
+   srand(3260);
+    GLfloat radius = 30;
+    for (int i = 0; i < ASTEROID; i++) {
+        GLfloat offset = rand() % 10 / 30.0f;
+        GLfloat theta = (float)i / (float)ASTEROID * 360 + asteroidRotation;
+        translateMatrix = glm::translate(mat4(), vec3(sin(theta) * radius + offset, 0.55 - offset, 15 + cos(theta) * radius * 0.5 + offset));
+        GLfloat phi = rand() % 360 + planetRotation;
+        rotateMatrix = glm::rotate(mat4(), glm::radians(phi), vec3(offset, offset, offset));
+        GLfloat scale = rand() % 10 / 200.0f;
+        scaleMatrix = glm::scale(mat4(), vec3(scale, scale, scale));
+        modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+        setMat4(programID, "model", modelTransformMatrix);
+        drawVAO(asteroids[i]);
+    }
+
+
+
+
+
+//    std::cout << "Finished paintGL" << std::endl;
+    glFlush();
 }
 
 
@@ -183,29 +219,24 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-
-void initializedGL(void) //run only once
+void initializedGL(void)
 {
-	if (glewInit() != GLEW_OK) {
-		std::cout << "GLEW not OK." << std::endl;
-	}
-
-	get_OpenGL_info();
-   /* generalShader.setupShader("VertexShaderCode.glsl", "FragmentShaderCode.glsl");
-    generalShader.use();*/
-    installShaders();
+    if (glewInit() != GLEW_OK) {
+        std::cout << "GLEW not OK." << std::endl;
+    }
+    get_OpenGL_info();
+    programID = installShaders("VertexShaderCode.glsl", "FragmentShaderCode.glsl");
+    if (programID == 0)     std::cout << "fuck" << std::endl;
+        
+//    skyboxID = installShaders("SkyboxVertexShaderCode.glsl", "SkyboxFragmentShaderCode.glsl");
+    sendDataToOpenGL();
     
-	sendDataToOpenGL();
-
-
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glDepthFunc(GL_LESS);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_CULL_FACE);
+//    glDepthFunc(GL_LESS);
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {
-    /*
     float xoffset = 0.0f;
     float yoffset = 0.0f;
     if (click){
@@ -234,7 +265,7 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
         direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         cameraFront = glm::normalize(direction);
     }
-    */
+
 }
 
 
@@ -252,7 +283,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-
+    if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        click = true;
+    }
+    if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
+        click = false;
+//        std::cout << cameraFront.x << std::endl;
+//        std::cout << cameraFront.y << std::endl;
+//        std::cout << cameraFront.z << std::endl;
+    }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
@@ -264,7 +303,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 //********** The main function
 int main(int argc, char* argv[])
 {
-	GLFWwindow* window;
+    GLFWwindow* window;
 
 	/* Initialize the glfw */
 	if (!glfwInit()) {

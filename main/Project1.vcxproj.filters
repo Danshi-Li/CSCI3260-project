@@ -18,12 +18,9 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\project\CSCI3260-project\main\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\project\CSCI3260-project\main\VertexShaderCode.glsl" />
-    <None Include="..\..\..\project\CSCI3260-project\main\FragmentShaderCode.glsl" />
+    <None Include="FragmentShaderCode.glsl" />
+    <None Include="VertexShaderCode.glsl" />
   </ItemGroup>
 </Project>
