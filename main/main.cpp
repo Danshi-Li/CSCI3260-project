@@ -44,7 +44,7 @@ GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 #define ASTEROID 200
 
-GLint programID;
+GLint programID, skyboxID;
 pipeline planet,asteroids[ASTEROID];
 
 //camera setting
@@ -68,6 +68,9 @@ int up_key_num = 0;
 int right_key_num = 0;
 int w_press_num = 0;
 int s_press_num = 0;
+
+//skybox params
+GLuint skybox_vao, skybox_vbo, earth_cubemapTexture;
 
 //planet rotation
 float timer, planetRotation, asteroidRotation;
@@ -113,6 +116,71 @@ void drawVAO(pipeline buffer) {
 void sendDataToOpenGL() {
     object obj;
     GLuint tex;
+    // define skybox
+    GLfloat skybox_vertices[] = {
+        // Front
+        +50.0f, +50.0f, -50.0f,
+        -50.0f, +50.0f, -50.0f,
+        +50.0f, -50.0f, -50.0f,
+        -50.0f, -50.0f, -50.0f,
+        +50.0f, -50.0f, -50.0f,
+        -50.0f, +50.0f, -50.0f,
+        // Back
+        +50.0f, +50.0f, +50.0f,
+        -50.0f, +50.0f, +50.0f,
+        +50.0f, -50.0f, +50.0f,
+        -50.0f, -50.0f, +50.0f,
+        +50.0f, -50.0f, +50.0f,
+        -50.0f, +50.0f, +50.0f,
+        // Bottom
+        +50.0f, -50.0f, +50.0f,
+        -50.0f, -50.0f, +50.0f,
+        +50.0f, -50.0f, -50.0f,
+        -50.0f, -50.0f, -50.0f,
+        +50.0f, -50.0f, -50.0f,
+        -50.0f, -50.0f, +50.0f,
+        // Top
+        +50.0f, +50.0f, +50.0f,
+        -50.0f, +50.0f, +50.0f,
+        +50.0f, +50.0f, -50.0f,
+        -50.0f, +50.0f, -50.0f,
+        +50.0f, +50.0f, -50.0f,
+        -50.0f, +50.0f, +50.0f,
+        // Left
+        -50.0f, +50.0f, +50.0f,
+        -50.0f, +50.0f, -50.0f,
+        -50.0f, -50.0f, +50.0f,
+        -50.0f, -50.0f, -50.0f,
+        -50.0f, -50.0f, +50.0f,
+        -50.0f, +50.0f, -50.0f,
+        // Right
+        +50.0f, +50.0f, +50.0f,
+        +50.0f, +50.0f, -50.0f,
+        +50.0f, -50.0f, +50.0f,
+        +50.0f, -50.0f, -50.0f,
+        +50.0f, -50.0f, +50.0f,
+        +50.0f, +50.0f, -50.0f,
+
+    };
+    vector<const GLchar*> earth_faces;
+    earth_faces.push_back("skybox/right.bmp");
+    earth_faces.push_back("skybox/left.bmp");
+    earth_faces.push_back("skybox/top.bmp");
+    earth_faces.push_back("skybox/bottom.bmp");
+    earth_faces.push_back("skybox/back.bmp");
+    earth_faces.push_back("skybox/front.bmp");
+    earth_cubemapTexture = loadCubeMap(earth_faces);
+    // create skybox vao & vbo
+    glGenVertexArrays(1, &skybox_vao);
+    glBindVertexArray(skybox_vao);
+    glGenBuffers(1, &skybox_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, skybox_vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skybox_vertices), &skybox_vertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+
+    
     // define planet
     loadOBJ("object/planet.obj", &obj);
     tex = loadTexture("texture/earthTexture.bmp");
@@ -172,6 +240,26 @@ void paintGL(void) {
     setVec3(programID,"lightSource[2]", glm::vec3(10.0f, 15.0f, -25.0f));
     setVec3(programID,"lightColor[2]", glm::vec3(1.0f, 0.5f, 0.0f));
 
+    //skybox
+    glDepthMask(GL_FALSE);
+    glUseProgram(skyboxID);
+    setMat4(skyboxID, "projection", projectionMatrix);
+    setMat4(skyboxID, "view", viewMatrix);
+
+    // skybox
+    setInt(skyboxID, "mapping", 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, earth_cubemapTexture);
+    glBindVertexArray(skybox_vao);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+    glDepthMask(GL_TRUE);
+
+    glEnable(GL_DEPTH_TEST);
+    glUseProgram(programID);
+    setMat4(programID, "projection", projectionMatrix);
+    setMat4(programID, "view", viewMatrix);
+
 
 
     //timer for rotation
@@ -228,7 +316,7 @@ void initializedGL(void)
     programID = installShaders("VertexShaderCode.glsl", "FragmentShaderCode.glsl");
     if (programID == 0)     std::cout << "fuck" << std::endl;
         
-//    skyboxID = installShaders("SkyboxVertexShaderCode.glsl", "SkyboxFragmentShaderCode.glsl");
+    skyboxID = installShaders("SkyboxVertexShaderCode.glsl", "SkyboxFragmentShaderCode.glsl");
     sendDataToOpenGL();
     
 //    glEnable(GL_DEPTH_TEST);

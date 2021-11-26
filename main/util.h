@@ -313,27 +313,28 @@ void get_OpenGL_info()
 	std::cout << "Renderer name: " << renderer << std::endl;
 	std::cout << "OpenGL version: " << glversion << std::endl;
 }
-//
-//void setMat4(GLuint const programID, const std::string& name, glm::mat4 value)
-//{
-//	glUniformMatrix4fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, &value[0][0]);
-//}
-//void setVec3(GLuint const programID, const std::string& name, glm::vec3 value)
-//{
-//	glUniform3fv(glGetUniformLocation(programID, name.c_str()), 1, &value[0]);
-//}
-//void setFloat(GLuint const programID, const std::string& name, float value)
-//{
-//	glUniform1f(glGetUniformLocation(programID, name.c_str()), value);
-//}
-//void setInt(GLuint const programID, const std::string& name, int value)
-//{
-//	glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
-//}
-//void setBool(GLuint const programID, const std::string& name, bool value)
-//{
-//	glUniform1i(glGetUniformLocation(programID, name.c_str()), (int)value);
-//}
+
+GLuint loadCubeMap(vector<const GLchar*> faces)
+{
+    unsigned int width, height;
+    unsigned char* image;
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    for (GLuint i = 0; i < faces.size(); i++) {
+        image = loadBMP(faces[i], &width, &height);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+        delete[] image;
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    return textureID;
+}
+
 
 
 void generateBuffer(object obj, pipeline* buffer, GLuint texture) {
