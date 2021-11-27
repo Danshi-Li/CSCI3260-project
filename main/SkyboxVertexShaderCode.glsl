@@ -1,6 +1,6 @@
 #version 330
 
-in layout(location = 0) vec3 position;
+layout(location = 0) in vec3 position;
 
 uniform mat4 projection;
 uniform mat4 view;

@@ -5,7 +5,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #elif defined _WIN32 || defined _WIN64
 #include "Dependencies\glew\glew.h"
-#include "Dependencies\freeglut\include\GL\freeglut.h"
+//#include "Dependencies\freeglut\include\GL\freeglut.h"
 #include "Dependencies\glm\glm.hpp"
 #include "Dependencies\glm\gtc\matrix_transform.hpp"
 #include "Dependencies\glm\gtc\type_ptr.hpp"
@@ -272,9 +272,9 @@ void paintGL(void) {
 
 
     //timer for rotation
-    timer = (float)glutGet(GLUT_ELAPSED_TIME) / 25;
-    planetRotation = timer;
-    asteroidRotation = timer / 100;
+//    timer = (float)Get(GLUT_ELAPSED_TIME) / 25;
+    planetRotation = 0;
+    asteroidRotation = 0 / 100;
 
     
     

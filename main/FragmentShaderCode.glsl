@@ -1,4 +1,4 @@
-#version 430 core
+#version 330 core
 
 #define num 3
 
