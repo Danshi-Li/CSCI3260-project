@@ -45,7 +45,7 @@ GLfloat lastY = SCR_HEIGHT / 2.0f;
 #define ASTEROID 200
 
 GLint programID, skyboxID;
-pipeline planet,asteroids[ASTEROID];
+pipeline planet,asteroids[ASTEROID], spacecraft;
 
 //camera setting
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
@@ -70,7 +70,7 @@ int w_press_num = 0;
 int s_press_num = 0;
 
 //skybox params
-GLuint skybox_vao, skybox_vbo, earth_cubemapTexture;
+GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, alertTexture;
 
 //planet rotation
 float timer, planetRotation, asteroidRotation;
@@ -79,6 +79,8 @@ float timer, planetRotation, asteroidRotation;
 float ambient = 0.15;
 float diffuse = 0.65;
 float specular = 0.35;
+
+bool flag = false;
 
 
 //
@@ -189,6 +191,13 @@ void sendDataToOpenGL() {
     planet.normalMapping = true;
     clear(&obj);
 
+    // define our own spacecraft
+    loadOBJ("object/spacecraft.obj", &obj);
+    spacecraftTexture = loadTexture("texture/spacecraftTexture.bmp");
+    generateBuffer(obj, &spacecraft, spacecraftTexture);
+    clear(&obj);
+
+
     // define asteroid ring
     loadOBJ("object/rock.obj", &obj);
     tex = loadTexture("texture/rockTexture.bmp");
@@ -215,9 +224,9 @@ void paintGL(void) {
     glm::mat4 modelTransformMatrix;
 
     //// spacecraft modelling
-    glm::mat4 translateMatrix = glm::translate(mat4(1.0f), vec3(-right_key_num, 0.5, 20 - up_key_num));
+    glm::mat4 translateMatrix = glm::translate(mat4(1.0f), vec3(right_key_num, 0.5, 20 - up_key_num));
     glm::mat4 rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(0.0f), vec3(0, 1, 0));
-    glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.0005f, 0.0005f, 0.0005f));
+    glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.05f, 0.05f, 0.05f));
     glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
     // world space modelling
     glm::vec4 camera = spacecraftModel * vec4(0.0f, 0.5f, 0.8f, 1.0f);
@@ -227,12 +236,13 @@ void paintGL(void) {
     setMat4(programID,"view", viewMatrix);
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
     setMat4(programID,"projection", projectionMatrix);
+    spacecraftModel = spacecraftModel * glm::rotate(mat4(), glm::radians(180.0f), vec3(0, 1, 0)) * scaleMatrix;
 
     //lights
     setFloat(programID,"ambientControl", ambient);
     setFloat(programID,"diffuseControl", diffuse);
     setFloat(programID,"specularControl", specular);
-    setVec3(programID,"viewPort", glm::vec3(right_key_num, 1.25, 23 + -up_key_num));
+    setVec3(programID,"viewPort", glm::vec3(right_key_num, 1.25, 23 -up_key_num));
     setVec3(programID,"lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
     setVec3(programID,"lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
     setVec3(programID,"lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
@@ -293,6 +303,11 @@ void paintGL(void) {
         drawVAO(asteroids[i]);
     }
 
+    // spacecraft
+    setMat4(programID, "model", spacecraftModel);
+    if (flag) spacecraft.texture = alertTexture;
+    else spacecraft.texture = spacecraftTexture;
+    drawVAO(spacecraft);
 
 
 
@@ -319,9 +334,9 @@ void initializedGL(void)
     skyboxID = installShaders("SkyboxVertexShaderCode.glsl", "SkyboxFragmentShaderCode.glsl");
     sendDataToOpenGL();
     
-//    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_CULL_FACE);
-//    glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDepthFunc(GL_LESS);
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {
