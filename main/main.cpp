@@ -17,9 +17,6 @@
 #include <map>
 
 using namespace std;
-using glm::vec3;
-using glm::vec4;
-using glm::mat4;
 
 
 //********** pre-provided utility functions are written in util.h **********
@@ -42,6 +39,7 @@ const int SCR_WIDTH = 800;
 const int SCR_HEIGHT = 600;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
+
 #define ASTEROID 200
 
 GLint programID, skyboxID;
@@ -105,8 +103,7 @@ void drawVAO(pipeline buffer) {
         setBool(programID, "normalMapping", false);
     }
     glBindVertexArray(buffer.vao);
-    glDrawArrays(GL_TRIANGLES, 0, buffer.size);  //会不会是这里Arrays而不是Elements？不像。
-    //glDrawElements(GL_TRIANGLES, buffer.size, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, buffer.size); 
 }
 
 
@@ -185,10 +182,10 @@ void sendDataToOpenGL() {
     loadOBJ("object/planet.obj", &obj);
     tex = loadTexture("texture/earthTexture.bmp");
     generateBuffer(obj, &planet, tex);
-    planet.normalTexture = loadTexture("texture/earthNormal.bmp");
-    planet.normalMapping = true;
+//    planet.normalTexture = loadTexture("texture/earthNormal.bmp");
+//    planet.normalMapping = true;
     clear(&obj);
-
+  
     // define asteroid ring
     loadOBJ("object/rock.obj", &obj);
     tex = loadTexture("texture/rockTexture.bmp");

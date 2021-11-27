@@ -1,4 +1,4 @@
-#version 430 core
+#version 330 core
 
 
 layout(location = 0) in vec3 position;
@@ -18,7 +18,7 @@ uniform mat4 model;
 
 void main()
 {
-    vec4 newPosition = model * vec4(position, 1);
+  vec4 newPosition = model * vec4(position, 1);
 	vec4 newNormal = model * vec4(normal, 0);
 	gl_Position =  projection * view * newPosition;
 
@@ -31,8 +31,4 @@ void main()
 	uvFrag = vertexUV;
 	normalFrag = newNormal.xyz;
 	TBN = transpose(mat3(tangentCamera, bitangentCamera, normalCamera));
-
-    
-    
-//    TBN = tempMatrix;
 }

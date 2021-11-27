@@ -1,11 +1,12 @@
-#version 430 core
-
+#version 330 core
 #define num 3
 
 in vec3 vertexFrag;
 in vec2 uvFrag;
 in vec3 normalFrag;
 in mat3 TBN;
+
+out vec4 colorFrag;
 
 // mapping parameter
 uniform sampler2D mapping;
@@ -18,16 +19,16 @@ uniform float diffuseControl;
 uniform float specularControl;
 
 // light parameter
-uniform vec3 viewPort;
-uniform vec3 lightSource[num];
-uniform vec3 lightColor[num];
+//uniform vec3 viewPort;
+//uniform vec3 lightSource[num];
+//uniform vec3 lightColor[num];
 
 // attenuation coeffient
 float constantCoeffient = 0.3f;
 float linearCoeffient = 0.001f;
 float quadraticCoeffient = 0.001f;
 
-out vec4 colorFrag;
+
 
 void main()
 {
