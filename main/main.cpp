@@ -107,8 +107,7 @@ void drawVAO(pipeline buffer) {
         setBool(programID, "normalMapping", false);
     }
     glBindVertexArray(buffer.vao);
-    glDrawArrays(GL_TRIANGLES, 0, buffer.size);  //会不会是这里Arrays而不是Elements？不像。
-    //glDrawElements(GL_TRIANGLES, buffer.size, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, buffer.size);  
 }
 
 
@@ -226,7 +225,7 @@ void paintGL(void) {
     //// spacecraft modelling
     glm::mat4 translateMatrix = glm::translate(mat4(1.0f), vec3(right_key_num, 0.5, 20 - up_key_num));
     glm::mat4 rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(0.0f), vec3(0, 1, 0));
-    glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.05f, 0.05f, 0.05f));
+    glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.0005f, 0.0005f, 0.0005f));
     glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
     // world space modelling
     glm::vec4 camera = spacecraftModel * vec4(0.0f, 0.5f, 0.8f, 1.0f);
@@ -236,7 +235,7 @@ void paintGL(void) {
     setMat4(programID,"view", viewMatrix);
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
     setMat4(programID,"projection", projectionMatrix);
-    spacecraftModel = spacecraftModel * glm::rotate(mat4(), glm::radians(180.0f), vec3(0, 1, 0)) * scaleMatrix;
+    spacecraftModel = spacecraftModel * glm::rotate(mat4(1.0f), glm::radians(180.0f), vec3(0, 1, 0)) * scaleMatrix;
 
     //lights
     setFloat(programID,"ambientControl", ambient);
@@ -305,8 +304,12 @@ void paintGL(void) {
 
     // spacecraft
     setMat4(programID, "model", spacecraftModel);
-    if (flag) spacecraft.texture = alertTexture;
-    else spacecraft.texture = spacecraftTexture;
+    if (flag) {
+        spacecraft.texture = alertTexture;
+    }
+    else {
+        spacecraft.texture = spacecraftTexture;
+    }
     drawVAO(spacecraft);
 
 
