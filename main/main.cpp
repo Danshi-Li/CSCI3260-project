@@ -273,7 +273,7 @@ void paintGL(void) {
 
     //timer for rotation
 //    timer = (float)Get(GLUT_ELAPSED_TIME) / 25;
-    timer = glfwGetTime();
+    timer = glfwGetTime()*10;
     planetRotation = timer;
     asteroidRotation = timer / 100;
 
