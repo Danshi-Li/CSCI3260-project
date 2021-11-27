@@ -43,9 +43,10 @@ const int SCR_HEIGHT = 600;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 #define ASTEROID 200
+#define CRAFTS 3
 
 GLint programID, skyboxID;
-pipeline planet,asteroids[ASTEROID], spacecraft;
+pipeline planet,asteroids[ASTEROID], spacecraft, crafts[CRAFTS];
 
 //camera setting
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
@@ -73,7 +74,7 @@ int s_press_num = 0;
 GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, alertTexture;
 
 //planet rotation
-float timer, planetRotation, asteroidRotation;
+float timer, planetRotation, asteroidRotation, craftRotation;
 
 //light parameters
 float ambient = 0.15;
@@ -204,6 +205,14 @@ void sendDataToOpenGL() {
         generateBuffer(obj, &asteroids[i], tex);
     clear(&obj);
 
+    // define local vehicles
+    loadOBJ("object/craft.obj", &obj);
+    tex = loadTexture("texture/ringTexture.bmp");
+    for (int i = 0; i < CRAFTS; i++)
+        generateBuffer(obj, &crafts[i], tex);
+    clear(&obj);
+
+
 }
 
 
@@ -275,6 +284,7 @@ void paintGL(void) {
     timer = (float)glutGet(GLUT_ELAPSED_TIME) / 25;
     planetRotation = timer;
     asteroidRotation = timer / 100;
+    craftRotation = timer * 2.7;
 
     
     
@@ -311,6 +321,16 @@ void paintGL(void) {
         spacecraft.texture = spacecraftTexture;
     }
     drawVAO(spacecraft);
+
+    //local space veicles
+    for (int i = 0; i <CRAFTS; i++) {
+        translateMatrix = glm::translate(mat4(1.0f), vec3(i * i * i - 1.2 * i * i + 0.5, 0.0, 5 * i - 15));
+        rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(craftRotation), vec3(0, 1, 0));
+        scaleMatrix = glm::scale(mat4(1.0f), vec3(0.2, 0.2, 0.2));
+        modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+        setMat4(programID, "model", modelTransformMatrix);
+        drawVAO(crafts[i]);
+    }
 
 
 
