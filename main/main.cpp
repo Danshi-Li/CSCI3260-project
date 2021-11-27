@@ -71,10 +71,11 @@ int w_press_num = 0;
 int s_press_num = 0;
 
 //skybox params
-GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, alertTexture;
+GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, localCraftTexture, alertTexture;
 
 //planet rotation
 float timer, planetRotation, asteroidRotation, craftRotation;
+float threshold = 1.0;
 
 //light parameters
 float ambient = 0.15;
@@ -90,17 +91,13 @@ bool flag = false;
 
 // incapsulate the matrix definition for OpenGL objects here.
 // refer to the codebase https://github.com/sinyiwsy/CSCI-3260-Assignment2/blob/master/main.cpp, Line 744
-void setupTransformMatrix(string obj) {
-
-}
-
 void drawVAO(pipeline buffer) {
-    setInt(programID,"mapping", 0);
+    setInt(programID, "mapping", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, buffer.texture);
     if (buffer.normalMapping) {
-        setBool(programID,"normalMapping", true);
-        setInt(programID,"mapping_N", 1);
+        setBool(programID, "normalMapping", true);
+        setInt(programID, "mapping_N", 1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, buffer.normalTexture);
     }
@@ -108,7 +105,27 @@ void drawVAO(pipeline buffer) {
         setBool(programID, "normalMapping", false);
     }
     glBindVertexArray(buffer.vao);
-    glDrawArrays(GL_TRIANGLES, 0, buffer.size);  
+    glDrawArrays(GL_TRIANGLES, 0, buffer.size);
+}
+
+bool collisionTest(glm::mat4 matrixA, glm::mat4 matrixB, int threshold)
+{
+    vec4 vectorA = matrixA * vec4(0, 0, 0, 1);
+    vec4 vectorB = matrixB * vec4(0, 0, 0, 1);
+    if (length(vectorA - vectorB) <= threshold)
+        return true;
+    else return false;
+}
+
+void checkCollision(pipeline* buffer, glm::mat4 model, glm::mat4 spacecraft, int threshold)
+{
+    if (buffer->collision) return;
+    if (collisionTest(model, spacecraft, threshold)) {
+        buffer->collision = true;
+        return;
+    }
+    setMat4(programID, "model", model);
+    drawVAO(*buffer);
 }
 
 
@@ -207,12 +224,14 @@ void sendDataToOpenGL() {
 
     // define local vehicles
     loadOBJ("object/craft.obj", &obj);
-    tex = loadTexture("texture/ringTexture.bmp");
+    localCraftTexture = loadTexture("texture/ringTexture.bmp");
     for (int i = 0; i < CRAFTS; i++)
         generateBuffer(obj, &crafts[i], tex);
     clear(&obj);
 
+    // define gold object
 
+    alertTexture = loadTexture("texture/red.bmp");
 }
 
 
@@ -312,14 +331,11 @@ void paintGL(void) {
         drawVAO(asteroids[i]);
     }
 
+    //gold
+
     // spacecraft
     setMat4(programID, "model", spacecraftModel);
-    if (flag) {
-        spacecraft.texture = alertTexture;
-    }
-    else {
-        spacecraft.texture = spacecraftTexture;
-    }
+    spacecraft.texture = spacecraftTexture;
     drawVAO(spacecraft);
 
     //local space veicles
@@ -329,6 +345,15 @@ void paintGL(void) {
         scaleMatrix = glm::scale(mat4(1.0f), vec3(0.2, 0.2, 0.2));
         modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
         setMat4(programID, "model", modelTransformMatrix);
+        if (collisionTest(modelTransformMatrix, spacecraftModel, 5.0)) {
+            flag = true;
+            crafts[i].texture = alertTexture;
+        }
+        else {
+            flag = false;
+            crafts[i].texture = localCraftTexture;
+        }
+
         drawVAO(crafts[i]);
     }
 
