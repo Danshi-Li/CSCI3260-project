@@ -43,9 +43,10 @@ const int SCR_HEIGHT = 600;
 GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 #define ASTEROID 200
+#define CRAFTS 3
 
 GLint programID, skyboxID;
-pipeline planet,asteroids[ASTEROID], spacecraft;
+pipeline planet,asteroids[ASTEROID], spacecraft, crafts[CRAFTS];
 
 //camera setting
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
@@ -70,10 +71,11 @@ int w_press_num = 0;
 int s_press_num = 0;
 
 //skybox params
-GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, alertTexture;
+GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, localCraftTexture, alertTexture;
 
 //planet rotation
-float timer, planetRotation, asteroidRotation;
+float timer, planetRotation, asteroidRotation, craftRotation;
+float threshold = 1.0;
 
 //light parameters
 float ambient = 0.15;
@@ -89,17 +91,13 @@ bool flag = false;
 
 // incapsulate the matrix definition for OpenGL objects here.
 // refer to the codebase https://github.com/sinyiwsy/CSCI-3260-Assignment2/blob/master/main.cpp, Line 744
-void setupTransformMatrix(string obj) {
-
-}
-
 void drawVAO(pipeline buffer) {
-    setInt(programID,"mapping", 0);
+    setInt(programID, "mapping", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, buffer.texture);
     if (buffer.normalMapping) {
-        setBool(programID,"normalMapping", true);
-        setInt(programID,"mapping_N", 1);
+        setBool(programID, "normalMapping", true);
+        setInt(programID, "mapping_N", 1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, buffer.normalTexture);
     }
@@ -107,7 +105,16 @@ void drawVAO(pipeline buffer) {
         setBool(programID, "normalMapping", false);
     }
     glBindVertexArray(buffer.vao);
-    glDrawArrays(GL_TRIANGLES, 0, buffer.size);  
+    glDrawArrays(GL_TRIANGLES, 0, buffer.size);
+}
+
+bool collisionTest(glm::mat4 matrixA, glm::mat4 matrixB, int threshold)
+{
+    vec4 vectorA = matrixA * vec4(0, 0, 0, 1);
+    vec4 vectorB = matrixB * vec4(0, 0, 0, 1);
+    if (length(vectorA - vectorB) <= threshold)
+        return true;
+    else return false;
 }
 
 
@@ -204,6 +211,16 @@ void sendDataToOpenGL() {
         generateBuffer(obj, &asteroids[i], tex);
     clear(&obj);
 
+    // define local vehicles
+    loadOBJ("object/craft.obj", &obj);
+    localCraftTexture = loadTexture("texture/ringTexture.bmp");
+    for (int i = 0; i < CRAFTS; i++)
+        generateBuffer(obj, &crafts[i], tex);
+    clear(&obj);
+
+    // define gold object
+
+    alertTexture = loadTexture("texture/red.bmp");
 }
 
 
@@ -276,6 +293,7 @@ void paintGL(void) {
     timer = glfwGetTime()*10;
     planetRotation = timer;
     asteroidRotation = timer / 100;
+    craftRotation = timer * 2.7;
 
     
     
@@ -303,15 +321,31 @@ void paintGL(void) {
         drawVAO(asteroids[i]);
     }
 
+
+
     // spacecraft
     setMat4(programID, "model", spacecraftModel);
-    if (flag) {
-        spacecraft.texture = alertTexture;
-    }
-    else {
-        spacecraft.texture = spacecraftTexture;
-    }
+    spacecraft.texture = spacecraftTexture;
     drawVAO(spacecraft);
+
+    //local space veicles
+    for (int i = 0; i <CRAFTS; i++) {
+        translateMatrix = glm::translate(mat4(1.0f), vec3(i * i * i - 1.2 * i * i + 0.5, 0.0, 5 * i - 15));
+        rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(craftRotation), vec3(0, 1, 0));
+        scaleMatrix = glm::scale(mat4(1.0f), vec3(0.2, 0.2, 0.2));
+        modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+        setMat4(programID, "model", modelTransformMatrix);
+        if (collisionTest(modelTransformMatrix, spacecraftModel, 5.0)) {
+            flag = true;
+            crafts[i].texture = alertTexture;
+        }
+        else {
+            flag = false;
+            crafts[i].texture = localCraftTexture;
+        }
+
+        drawVAO(crafts[i]);
+    }
 
 
 
@@ -387,6 +421,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS) right_key_num += 1;
     if (key == GLFW_KEY_UP && action == GLFW_PRESS) up_key_num += 1;
     if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) up_key_num -= 1;
+    if (key == GLFW_KEY_N && action == GLFW_PRESS) planet.normalMapping = !planet.normalMapping;
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
