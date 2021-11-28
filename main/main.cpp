@@ -60,16 +60,19 @@ glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
 // mouse input
 bool firstMouse = true;
 GLfloat yaw = 0;
-GLfloat pitch = -1.5;
+GLfloat pitch = 0;
 vec3 position;
 int left_press_num = 0;
 int right_press_num = 0;
 bool click = false;
 // key input
-int up_key_num = 0;
-int right_key_num = 0;
-int w_press_num = 0;
-int s_press_num = 0;
+bool up_key = false;
+bool right_key = false;
+bool down_key = false;
+bool left_key = false;
+bool w_key = false;
+bool s_key = false;
+float speed = 0.1f;
 
 //skybox params
 GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, localCraftTexture, alertTexture;
@@ -232,7 +235,11 @@ void paintGL(void) {
     glEnable(GL_DEPTH_TEST);
     glUseProgram(programID);
     
-    
+    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraFront));
+    if(up_key) cameraPos += cameraFront*speed;
+    if(down_key) cameraPos -= cameraFront*speed;
+    if(left_key) cameraPos += cameraRight*speed;
+    if(right_key) cameraPos -= cameraRight*speed;
     
     glm::mat4 viewMatrix = glm::lookAt(cameraPos + vec3(0.0f, 0.2f, 0.0f) -cameraFront, cameraPos + vec3(0.0f, 0.2f, 0.0f), cameraUp);
     setMat4(programID, "view", viewMatrix);
@@ -376,21 +383,16 @@ void initializedGL(void)
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {
-    float xoffset = 0.0f;
-    float yoffset = 0.0f;
-    if (click){
-        // Sets the cursor position callback for the current window
-        xoffset = x - lastX;
-        yoffset = lastY - y;
-    }
+    float xoffset = x - lastX;
+    float yoffset = lastY - y;
     lastX = x;
     lastY = y;
-    if (click){
-        float sensitivity = 0.2f;
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
+    
+    float sensitivity = 0.2f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
 
-        yaw   += xoffset;
+    yaw   += xoffset;
 //        pitch += yoffset;
 //
 //        if(pitch > 89.0f)
@@ -398,13 +400,11 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
 //        if(pitch < -89.0f)
 //            pitch = -89.0f;
 
-        glm::vec3 direction;
-        direction.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-        direction.y = sin(glm::radians(pitch));
-        direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        cameraFront = glm::normalize(direction);
-//        std::cout << pitch << std::endl;
-    }
+    glm::vec3 direction;
+    direction.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
 
 }
 
@@ -412,27 +412,26 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraFront));
     // Sets the Keyboard callback for the current window.
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
     if(key == GLFW_KEY_LEFT && action == GLFW_PRESS){
-        right_key_num -= 1;
-        cameraPos += cameraRight;
+        left_key = true;
     }
     if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
-        right_key_num += 1;
-        cameraPos -= cameraRight;
+        right_key = true;
     }
     if (key == GLFW_KEY_UP && action == GLFW_PRESS){
-        up_key_num += 1;
-        cameraPos += cameraFront;
+        up_key = true;
     }
     if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
-        up_key_num -= 1;
-        cameraPos -= cameraFront;
+        down_key = true;
     }
+    if(key == GLFW_KEY_LEFT && action == GLFW_RELEASE) left_key = false;
+    if(key == GLFW_KEY_RIGHT && action == GLFW_RELEASE) right_key = false;
+    if(key == GLFW_KEY_UP && action == GLFW_RELEASE) up_key = false;
+    if(key == GLFW_KEY_DOWN && action == GLFW_RELEASE) down_key = false;
     if (key == GLFW_KEY_N && action == GLFW_PRESS) planet.normalMapping = !planet.normalMapping;
 }
 
@@ -491,7 +490,10 @@ int main(int argc, char* argv[])
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
-
+    
+    //tell GLFW to capture our mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
 	initializedGL();
 
 	while (!glfwWindowShouldClose(window)) {
