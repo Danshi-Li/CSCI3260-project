@@ -60,7 +60,8 @@ glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
 // mouse input
 bool firstMouse = true;
 GLfloat yaw = 0;
-GLfloat pitch = 0;
+GLfloat pitch = -1.5;
+vec3 position;
 int left_press_num = 0;
 int right_press_num = 0;
 bool click = false;
@@ -231,34 +232,29 @@ void paintGL(void) {
     glEnable(GL_DEPTH_TEST);
     glUseProgram(programID);
     
-    //glm::mat4 viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    //setMat4(programID, "view", viewMatrix);
-    //
-    //glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 20.0f);
-    //setMat4(programID, "projection", projectionMatrix);
+    
+    
+    glm::mat4 viewMatrix = glm::lookAt(cameraPos + vec3(0.0f, 0.2f, 0.0f) -cameraFront, cameraPos + vec3(0.0f, 0.2f, 0.0f), cameraUp);
+    setMat4(programID, "view", viewMatrix);
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
+    setMat4(programID, "projection", projectionMatrix);
 
     glm::mat4 modelTransformMatrix;
 
     //// spacecraft modelling
-    glm::mat4 translateMatrix = glm::translate(mat4(1.0f), vec3(right_key_num, 0.5, 20 - up_key_num));
-    glm::mat4 rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(0.0f), vec3(0, 1, 0));
-    glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.0005f, 0.0005f, 0.0005f));
-    glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
-    // world space modelling
-    glm::vec4 camera = spacecraftModel * vec4(0.0f, 0.5f, 0.8f, 1.0f);
-    glm::vec4 viewport = spacecraftModel * vec4(0.0f, 0.0f, -0.8f, 1.0f);
-
-    glm::mat4 viewMatrix = glm::lookAt(glm::vec3(camera), glm::vec3(viewport), glm::vec3(0, 1, 0));
-    setMat4(programID,"view", viewMatrix);
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH/(float)SCR_HEIGHT, 0.1f, 500.0f);
-    setMat4(programID,"projection", projectionMatrix);
-    spacecraftModel = spacecraftModel * glm::rotate(mat4(1.0f), glm::radians(180.0f), vec3(0, 1, 0)) * scaleMatrix;
+    ///
+    modelTransformMatrix = mat4(1.0f);
+    modelTransformMatrix = glm::translate(modelTransformMatrix, cameraPos);
+    modelTransformMatrix = glm::rotate(modelTransformMatrix, glm::radians(180.0f), vec3(0, 1, 0));
+    modelTransformMatrix = glm::rotate(modelTransformMatrix, -glm::radians(yaw), vec3(0, 1, 0));
+    modelTransformMatrix = glm::scale(modelTransformMatrix, vec3(0.0005f, 0.0005f, 0.0005f));
+    glm::mat4 spacecraftModel = modelTransformMatrix;
 
     //lights
     setFloat(programID,"ambientControl", ambient);
     setFloat(programID,"diffuseControl", diffuse);
     setFloat(programID,"specularControl", specular);
-    setVec3(programID,"viewPort", glm::vec3(right_key_num, 1.25, 23 -up_key_num));
+    setVec3(programID,"viewPort", cameraPos);
     setVec3(programID,"lightSource[0]", glm::vec3(-10.0f, 15.0f, 25.0f));
     setVec3(programID,"lightColor[0]", glm::vec3(1.0f, 1.0f, 1.0f));
     setVec3(programID,"lightSource[1]", glm::vec3(0.0f, 15.0f, 0.0f));
@@ -295,7 +291,9 @@ void paintGL(void) {
     asteroidRotation = timer / 100;
     craftRotation = timer * 2.7;
 
-    
+    glm::mat4 rotateMatrix;
+    glm::mat4 scaleMatrix;
+    glm::mat4 translateMatrix;
     
     //the planet object
     translateMatrix = glm::translate(mat4(1.0f), vec3(0, 0, -20));
@@ -393,18 +391,19 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
         yoffset *= sensitivity;
 
         yaw   += xoffset;
-        pitch += yoffset;
-
-        if(pitch > 89.0f)
-            pitch = 89.0f;
-        if(pitch < -89.0f)
-            pitch = -89.0f;
+//        pitch += yoffset;
+//
+//        if(pitch > 89.0f)
+//            pitch = 89.0f;
+//        if(pitch < -89.0f)
+//            pitch = -89.0f;
 
         glm::vec3 direction;
         direction.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
         direction.y = sin(glm::radians(pitch));
         direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         cameraFront = glm::normalize(direction);
+//        std::cout << pitch << std::endl;
     }
 
 }
@@ -413,14 +412,27 @@ void cursor_position_callback(GLFWwindow* window, double x, double y) {
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+    glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraFront));
     // Sets the Keyboard callback for the current window.
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
-    if(key == GLFW_KEY_LEFT && action == GLFW_PRESS) right_key_num -= 1;
-    if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS) right_key_num += 1;
-    if (key == GLFW_KEY_UP && action == GLFW_PRESS) up_key_num += 1;
-    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) up_key_num -= 1;
+    if(key == GLFW_KEY_LEFT && action == GLFW_PRESS){
+        right_key_num -= 1;
+        cameraPos += cameraRight;
+    }
+    if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
+        right_key_num += 1;
+        cameraPos -= cameraRight;
+    }
+    if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+        up_key_num += 1;
+        cameraPos += cameraFront;
+    }
+    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
+        up_key_num -= 1;
+        cameraPos -= cameraFront;
+    }
     if (key == GLFW_KEY_N && action == GLFW_PRESS) planet.normalMapping = !planet.normalMapping;
 }
 
