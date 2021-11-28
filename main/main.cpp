@@ -117,17 +117,6 @@ bool collisionTest(glm::mat4 matrixA, glm::mat4 matrixB, int threshold)
     else return false;
 }
 
-void checkCollision(pipeline* buffer, glm::mat4 model, glm::mat4 spacecraft, int threshold)
-{
-    if (buffer->collision) return;
-    if (collisionTest(model, spacecraft, threshold)) {
-        buffer->collision = true;
-        return;
-    }
-    setMat4(programID, "model", model);
-    drawVAO(*buffer);
-}
-
 
 //
 //
@@ -331,7 +320,7 @@ void paintGL(void) {
         drawVAO(asteroids[i]);
     }
 
-    //gold
+
 
     // spacecraft
     setMat4(programID, "model", spacecraftModel);
@@ -431,6 +420,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS) right_key_num += 1;
     if (key == GLFW_KEY_UP && action == GLFW_PRESS) up_key_num += 1;
     if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) up_key_num -= 1;
+    if (key == GLFW_KEY_N && action == GLFW_PRESS) planet.normalMapping = !planet.normalMapping;
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
