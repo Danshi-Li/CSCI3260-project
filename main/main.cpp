@@ -75,7 +75,7 @@ bool s_key = false;
 float speed = 0.1f;
 
 //skybox params
-GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, localCraftTexture, alertTexture;
+GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, localCraftTexture, alertTexture, goldTexture, rockTexture;
 
 //planet rotation
 float timer, planetRotation, asteroidRotation, craftRotation;
@@ -87,6 +87,7 @@ float diffuse = 0.65;
 float specular = 0.35;
 
 bool flag = false;
+bool alert[CRAFTS];
 
 
 //
@@ -191,7 +192,11 @@ void sendDataToOpenGL() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+    // define gold object
 
+    alertTexture = loadTexture("texture/red.bmp");
+    goldTexture = loadTexture("texture/gold.bmp");
+    rockTexture = loadTexture("texture/rockTexture.bmp");
     
     // define planet
     loadOBJ("object/planet.obj", &obj);
@@ -221,10 +226,6 @@ void sendDataToOpenGL() {
     for (int i = 0; i < CRAFTS; i++)
         generateBuffer(obj, &crafts[i], tex);
     clear(&obj);
-
-    // define gold object
-
-    alertTexture = loadTexture("texture/red.bmp");
 }
 
 
@@ -322,6 +323,14 @@ void paintGL(void) {
         GLfloat scale = rand() % 10 / 200.0f;
         scaleMatrix = glm::scale(mat4(1.0f), vec3(scale, scale, scale));
         modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+        if (collisionTest(modelTransformMatrix, spacecraftModel, 2.0)){
+            flag = true;
+        }
+        if (flag == false){
+            asteroids[i].texture = goldTexture;
+        }else{
+            asteroids[i].texture = rockTexture;
+        }
         setMat4(programID, "model", modelTransformMatrix);
         drawVAO(asteroids[i]);
     }
@@ -329,8 +338,9 @@ void paintGL(void) {
 
 
     // spacecraft
+    if (flag) spacecraft.texture = goldTexture;
+    else spacecraft.texture = spacecraftTexture;
     setMat4(programID, "model", spacecraftModel);
-    spacecraft.texture = spacecraftTexture;
     drawVAO(spacecraft);
 
     //local space veicles
@@ -341,11 +351,12 @@ void paintGL(void) {
         modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
         setMat4(programID, "model", modelTransformMatrix);
         if (collisionTest(modelTransformMatrix, spacecraftModel, 5.0)) {
-            flag = true;
+            alert[i] = true;
+        }
+        if (alert[i]) {
             crafts[i].texture = alertTexture;
         }
         else {
-            flag = false;
             crafts[i].texture = localCraftTexture;
         }
 
@@ -454,7 +465,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 //
 //
 //********** The main function
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
     GLFWwindow* window;
 
