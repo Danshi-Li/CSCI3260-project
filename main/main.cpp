@@ -77,6 +77,9 @@ GLuint skybox_vao, skybox_vbo, earth_cubemapTexture, spacecraftTexture, localCra
 float timer, planetRotation, asteroidRotation, craftRotation;
 float threshold = 1.0;
 
+//spacecraft rotation
+float spacecraft_rotate;
+
 //light parameters
 float ambient = 0.15;
 float diffuse = 0.65;
@@ -241,7 +244,7 @@ void paintGL(void) {
 
     //// spacecraft modelling
     glm::mat4 translateMatrix = glm::translate(mat4(1.0f), vec3(right_key_num, 0.5, 20 - up_key_num));
-    glm::mat4 rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(0.0f), vec3(0, 1, 0));
+    glm::mat4 rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(spacecraft_rotate), vec3(0, 1, 0));
     glm::mat4 scaleMatrix = glm::scale(mat4(1.0f), vec3(0.0005f, 0.0005f, 0.0005f));
     glm::mat4 spacecraftModel = translateMatrix * rotateMatrix;
     // world space modelling
@@ -377,33 +380,8 @@ void initializedGL(void)
 }
 
 void cursor_position_callback(GLFWwindow* window, double x, double y) {
-    float xoffset = 0.0f;
-    float yoffset = 0.0f;
-    if (click){
-        // Sets the cursor position callback for the current window
-        xoffset = x - lastX;
-        yoffset = lastY - y;
-    }
-    lastX = x;
-    lastY = y;
-    if (click){
-        float sensitivity = 0.2f;
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
-
-        yaw   += xoffset;
-        pitch += yoffset;
-
-        if(pitch > 89.0f)
-            pitch = 89.0f;
-        if(pitch < -89.0f)
-            pitch = -89.0f;
-
-        glm::vec3 direction;
-        direction.x = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-        direction.y = sin(glm::radians(pitch));
-        direction.z = -cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        cameraFront = glm::normalize(direction);
+    if (click) {
+        spacecraft_rotate = (float)(360 - x) / 6;
     }
 
 }
@@ -436,7 +414,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-
+    
 }
 
 //
@@ -480,6 +458,7 @@ int main(int argc, char* argv[])
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 
 	initializedGL();
+
 
 	while (!glfwWindowShouldClose(window)) {
 		/* Render here */
