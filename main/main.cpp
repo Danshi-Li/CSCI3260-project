@@ -44,9 +44,10 @@ GLfloat lastX = SCR_WIDTH / 2.0f;
 GLfloat lastY = SCR_HEIGHT / 2.0f;
 #define ASTEROID 200
 #define CRAFTS 3
+#define GOLD 2
 
 GLint programID, skyboxID;
-pipeline planet,asteroids[ASTEROID], spacecraft, crafts[CRAFTS];
+pipeline planet,asteroids[ASTEROID], spacecraft, crafts[CRAFTS], gold[3];
 
 //camera setting
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  5.0f);
@@ -86,7 +87,7 @@ float ambient = 0.15;
 float diffuse = 0.65;
 float specular = 0.35;
 
-bool flag = false;
+bool flag[3];
 bool alert[CRAFTS];
 
 
@@ -218,6 +219,8 @@ void sendDataToOpenGL() {
     tex = loadTexture("texture/rockTexture.bmp");
     for (int i = 0; i < ASTEROID; i++)
         generateBuffer(obj, &asteroids[i], tex);
+    for (int i = 0; i < GOLD; i++)
+        generateBuffer(obj, &gold[i], goldTexture);
     clear(&obj);
 
     // define local vehicles
@@ -323,29 +326,42 @@ void paintGL(void) {
         GLfloat scale = rand() % 10 / 200.0f;
         scaleMatrix = glm::scale(mat4(1.0f), vec3(scale, scale, scale));
         modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
-        if (collisionTest(modelTransformMatrix, spacecraftModel, 2.0)){
-            flag = true;
-        }
-        if (flag == false){
-            asteroids[i].texture = goldTexture;
-        }else{
-            asteroids[i].texture = rockTexture;
-        }
         setMat4(programID, "model", modelTransformMatrix);
         drawVAO(asteroids[i]);
+    }
+    
+    for (int i = 0; i < GOLD; i++) {
+        GLfloat offset = rand() % 10 / 30.0f;
+        GLfloat theta = (float)i / (float)GOLD * 360 + asteroidRotation;
+        translateMatrix = glm::translate(mat4(1.0f), vec3(sin(theta) * radius + offset, 0.55 - offset, -20 + cos(theta) * radius * 0.5 + offset));
+        GLfloat phi = rand() % 360 + planetRotation;
+        rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(phi), vec3(offset, offset, offset));
+        GLfloat scale = 0.1f;
+        scaleMatrix = glm::scale(mat4(1.0f), vec3(scale, scale, scale));
+        modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+        setMat4(programID, "model", modelTransformMatrix);
+        if (collisionTest(modelTransformMatrix, spacecraftModel, 1.0)){
+            flag[i]=true;
+        }
+        if (flag[i]== false)  drawVAO(gold[i]);
     }
 
 
 
     // spacecraft
-    if (flag) spacecraft.texture = goldTexture;
+    bool finished = true;
+    for (int i = 0; i<GOLD; i++){
+        if (flag[i]==false) finished=false;
+    }
+    
+    if (finished) spacecraft.texture = goldTexture;
     else spacecraft.texture = spacecraftTexture;
     setMat4(programID, "model", spacecraftModel);
     drawVAO(spacecraft);
 
     //local space veicles
     for (int i = 0; i <CRAFTS; i++) {
-        translateMatrix = glm::translate(mat4(1.0f), vec3(i * i * i - 1.2 * i * i + 0.5, 0.0, 5 * i - 15));
+        translateMatrix = glm::translate(mat4(1.0f), vec3(i * i * i - 1.2 * i * i + 0.5 + sin(craftRotation/10)*10, 0.0, 5 * i - 15));
         rotateMatrix = glm::rotate(mat4(1.0f), glm::radians(craftRotation), vec3(0, 1, 0));
         scaleMatrix = glm::scale(mat4(1.0f), vec3(0.2, 0.2, 0.2));
         modelTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
@@ -389,7 +405,7 @@ void initializedGL(void)
     sendDataToOpenGL();
     
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+//    glEnable(GL_CULL_FACE);
     glDepthFunc(GL_LESS);
 }
 
